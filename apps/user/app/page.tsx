@@ -1,0 +1,19 @@
+import Image from "next/image";
+import { cn } from "ui";
+import { spaceGrotesk } from "./layout";
+export default function Home() {
+  return (
+    <div className="w-full h-screen bg-primary flex flex-col gap-4 items-center justify-center">
+      <div className="flex gap-2">
+        <Image src={"/logo.svg"} alt="logo" width={48} height={48} />
+        <h1
+          className={cn(
+            "text-2xl text-primary-foreground font-semibold hover:text-primary/40",
+            spaceGrotesk.className
+          )}>
+          Trackmycare
+        </h1>
+      </div>
+    </div>
+  );
+}
