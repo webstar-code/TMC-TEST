@@ -1,8 +1,10 @@
 'use client'
+import Footer from "components/Footer";
 import Header from "components/Header";
 import AboutUs from "components/landing-page/AboutUs";
 import Contact from "components/landing-page/Contact";
 import DesignedForUtility from "components/landing-page/DesignedForUtility";
+import FAQs from "components/landing-page/FAQs";
 import HeroSection from "components/landing-page/HeroSection";
 import HowItWorks from "components/landing-page/HowItWorks";
 import Services from "components/landing-page/Services";
@@ -23,8 +25,10 @@ export default function Home() {
         <DesignedForUtility />
         <StartNow />
         <AboutUs />
-        {/* <Contact /> */}
+        <Contact />
         {/* <Support /> */}
+        <FAQs />
+        <Footer />
       </div>
     </>
   );

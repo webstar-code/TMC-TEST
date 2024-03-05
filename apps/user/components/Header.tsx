@@ -11,8 +11,8 @@ import { usePathname } from 'next/navigation';
 function Header() {
     const currentRoute = usePathname();
     return (
-        <div className='relative'>
-            <div className='bg-primary fixed w-full z-50 flex flex-row justify-between items-center px-6 md:px-16 py-4 md:py-5'>
+        <div className=''>
+            <div className='bg-primary w-full z-50 flex flex-row justify-between items-center px-6 md:px-16 py-4 md:py-5'>
                 <div className='flex flex-row gap-2'>
                     <Image src={"/logo.svg"} alt="logo" width={42} height={42} />
                     <p className='text-secondary font-bold text-md'>Track My Care</p>

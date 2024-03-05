@@ -5,8 +5,8 @@ import { Button } from 'ui';
 function HeroSection() {
 
     return (
-        <div className='h-[860px] md:h-[1170px] border-1 border-red-500'>
-            <div className='h-[calc(700px-64px)] md:min-h-[calc(100vh)] bg-primary relative md:max-h-fit'>
+        <div className='h-[860px] md:h-[1070px] border-1 border-red-500'>
+            <div className='h-[calc(80vh-64px)] md:min-h-[calc(100vh-72px)] bg-primary relative md:max-h-fit'>
                 <div className='absolute right-0 z-10'><Image src={'/Ellipse.svg'} alt="logo" width={200} height={200} /></div>
                 <div className='absolute top-32 z-30 w-full'>
                     <div className='px-6 flex flex-col  gap-8 justify-center mx-auto md:w-[60%]'>
