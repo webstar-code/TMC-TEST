@@ -1,19 +1,31 @@
-import Image from "next/image";
-import { cn } from "ui";
-import { spaceGrotesk } from "./layout";
+'use client'
+import Header from "components/Header";
+import AboutUs from "components/landing-page/AboutUs";
+import Contact from "components/landing-page/Contact";
+import DesignedForUtility from "components/landing-page/DesignedForUtility";
+import HeroSection from "components/landing-page/HeroSection";
+import HowItWorks from "components/landing-page/HowItWorks";
+import Services from "components/landing-page/Services";
+import StartNow from "components/landing-page/StartNow";
+import Support from "components/landing-page/Support";
+import WhyUse from "components/landing-page/WhyUse";
+
+
 export default function Home() {
   return (
-    <div className="w-full h-screen bg-primary flex flex-col gap-4 items-center justify-center">
-      <div className="flex gap-2">
-        <Image src={"/logo.svg"} alt="logo" width={48} height={48} />
-        <h1
-          className={cn(
-            "text-2xl text-primary-foreground font-semibold hover:text-primary/40",
-            spaceGrotesk.className
-          )}>
-          Trackmycare
-        </h1>
+    <>
+      <div>
+        <Header />
+        <HeroSection />
+        <Services />
+        <WhyUse />
+        <HowItWorks />
+        <DesignedForUtility />
+        <StartNow />
+        <AboutUs />
+        {/* <Contact /> */}
+        {/* <Support /> */}
       </div>
-    </div>
+    </>
   );
 }
