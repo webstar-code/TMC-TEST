@@ -23,6 +23,7 @@ import {
     SelectValue,
 } from "ui"
 import { Textarea } from "ui"
+import { ContactUs } from 'assets/images'
 
 
 
@@ -67,10 +68,10 @@ function Contact() {
             <div className='flex flex-col gap-10 md:w-1/2'>
                 <div className='w-full text-center font-bold text-xl md:text-4xl md:text-start md:w-[50%]'>{"We'd love to hear from you!"}</div>
                 <div>
-                    <Image src='/ContactUs.svg' className='md:hidden' alt='' width={350} height={200} />
+                    <Image src={ContactUs} className='md:hidden' alt='' width={350} height={200} />
                 </div>
                 <div>
-                    <Image src='/ContactUs.svg' className='hidden md:block' alt='' width={650} height={200} />
+                    <Image src={ContactUs} className='hidden md:block' alt='' width={650} height={200} />
                 </div>
             </div>
             <div className='md:w-[45%]'>

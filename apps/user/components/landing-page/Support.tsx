@@ -9,7 +9,7 @@ function Support() {
                 <div className="w-full md:w-1/2 h-full flex flex-col py-6">
                     <h1 className="text-4xl font-bold mb-10"></h1>
                     <div className="w-full h-full flex flex-col md:hidden mb-10">
-                        <GoogleMap
+                        {/* <GoogleMap
                             mapContainerClassName="w-full h-[calc(100vh-10rem)] rounded-2xl max-h-[512px]"
                             zoom={14}
                             center={COMPANY_LOCATION}
@@ -20,7 +20,7 @@ function Support() {
                             }}
                         >
                             {COMPANY_LOCATION && <MarkerF position={COMPANY_LOCATION} />}
-                        </GoogleMap>
+                        </GoogleMap> */}
                     </div>
                     <div className="flex flex-col gap-6">
                         <div className="flex flex-col gap-2">

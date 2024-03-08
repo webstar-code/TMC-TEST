@@ -1,3 +1,4 @@
+import { logo } from 'assets/images'
 import Image from 'next/image'
 import React from 'react'
 import {
@@ -16,7 +17,7 @@ function Footer() {
                 <div className='flex flex-col gap-6'>
                     <div className='flex flex-col gap-4'>
                         <div className='flex flex-row gap-2'>
-                            <Image src={"/logo.svg"} alt="logo" width={42} height={42} />
+                            <Image src={logo} alt="logo" width={42} height={42} />
                             <p className='text-secondary font-bold text-xl'>Track My Care</p>
                         </div>
                         <div className='font-thin'>

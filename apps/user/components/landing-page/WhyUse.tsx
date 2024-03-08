@@ -1,3 +1,4 @@
+import { FamilyMedicalVault, FingerTipAccess, LifetimeRepository, QuickShare, SecureStorage, YourHealthCould } from 'assets/images'
 import Image from 'next/image'
 import React from 'react'
 import {
@@ -14,32 +15,32 @@ function WhyUse() {
         {
             title: "Your Health Cloud",
             description: 'Finally a convenient place to store all your health information in an organized and secure medical cloud.',
-            imageUrl: '/YourHealthCould.svg'
+            imageUrl: YourHealthCould
         },
         {
             title: "Family Medical Vault",
             description: 'Storage of all your familys health information on a user friendly and easy to use platform.',
-            imageUrl: '/FamilyMedicalVault.svg'
+            imageUrl: FamilyMedicalVault
         },
         {
             title: "Secure Storage",
             description: 'Your medical records are protected in a secure cloud infrastructure and with adherence to HIPAA and robust privacy policies.',
-            imageUrl: '/SecureStorage.svg'
+            imageUrl: SecureStorage
         },
         {
             title: "Lifetime Repository",
             description: 'No need to fumble upon files and folders. Now you can organize your medical reports in one place with long term storage.',
-            imageUrl: '/LifetimeRepository.svg'
+            imageUrl: LifetimeRepository
         },
         {
             title: "Fingertip Access",
             description: 'Whether you are traveling, at home or at a doctors visit, you can easily access your medical cloud.',
-            imageUrl: '/FingerTipAccess.svg'
+            imageUrl: FingerTipAccess
         },
         {
             title: "Quick Share",
             description: 'Easily grant trusted health professionals access to your medical records enabling them to better understand your health and provide guidance.',
-            imageUrl: '/QuickShare.svg'
+            imageUrl: QuickShare
         },
     ]
 
@@ -69,10 +70,10 @@ function WhyUse() {
                     </Carousel>
                 </div>
                 <div className='hidden md:block'>
-                    <div className="grid grid-cols-3 gap-12 md:px-8 md:py-12 justify-around mx-auto">
+                    <div className="grid grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 md:grid-cols-2 gap-12 md:px-8 md:py-12 justify-around mx-auto">
                         {cardContent.map((item, index) => (
                             <div key={index} className="shadow px-4 rounded-xl flex flex-col gap-4 py-10 w-[90%] mx-auto">
-                                <Image src={item.imageUrl} alt={item.title} className="mx-auto" width={200} height={200} />
+                                <Image src={item.imageUrl} alt={item.title} className="mx-auto h-[200px]" width={200} height={200} />
                                 <h2 className="text-xl font-bold w-full text-center">{item.title}</h2>
                                 <p className="mt-2 w-full text-center">{item.description}</p>
                             </div>

@@ -5,6 +5,7 @@ import { Button } from 'ui';
 import { ChevronDown, Languages } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { logo } from 'assets/images';
 
 
 
@@ -12,9 +13,9 @@ function Header() {
     const currentRoute = usePathname();
     return (
         <div className=''>
-            <div className='bg-primary w-full z-50 flex flex-row justify-between items-center px-6 md:px-16 py-4 md:py-5'>
+            <div className='fixed top-0 bg-primary w-full z-50 flex flex-row justify-between items-center px-6 md:px-16 py-4 md:py-5'>
                 <div className='flex flex-row gap-2'>
-                    <Image src={"/logo.svg"} alt="logo" width={42} height={42} />
+                    <Image src={logo} alt="logo" width={42} height={42} />
                     <p className='text-secondary font-bold text-md'>Track My Care</p>
                 </div>
                 <div className='hidden md:flex'>

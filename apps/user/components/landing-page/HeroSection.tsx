@@ -1,13 +1,14 @@
 'use client'
 import Image from "next/image";
 import { Button } from 'ui';
+import { Ellipse, Ellipse1, HeroImage } from "assets/images";
 
 function HeroSection() {
 
     return (
         <div className='h-[860px] md:h-[1070px] border-1 border-red-500'>
-            <div className='h-[calc(80vh-64px)] md:min-h-[calc(100vh-72px)] bg-primary relative md:max-h-fit'>
-                <div className='absolute right-0 z-10'><Image src={'/Ellipse.svg'} alt="logo" width={200} height={200} /></div>
+            <div className='h-[calc(100vh-64px)] md:min-h-[calc(100vh-72px)] bg-primary relative md:max-h-fit mt-[64px] md:mt-[72px]'>
+                <div className='absolute right-0 z-10'><Image src={Ellipse} alt="logo" width={200} height={200} /></div>
                 <div className='absolute top-32 z-30 w-full'>
                     <div className='px-6 flex flex-col  gap-8 justify-center mx-auto md:w-[60%]'>
                         <p className='text-secondary text-3xl md:text-[48px] text-center font-bold leading-[1.2]'>Access Your Health Records Anywhere, Anytime with Track My Care!</p>
@@ -17,10 +18,10 @@ function HeroSection() {
                         </div>
                     </div>
                 </div>
-                <div className='absolute bottom-0'><Image src={'/Ellipse1.svg'} alt="logo" width={210} height={210} /></div>
+                <div className='absolute bottom-0'><Image src={Ellipse1} alt="logo" width={210} height={210} /></div>
                 <div className={`absolute -bottom-[150px] md:-bottom-[400px] w-full h-fit`}>
                     <div className='flex w-full justify-center px-5'>
-                        <Image src={'/HeroImage.png'} alt="logo" width={770} height={370} />
+                        <Image src={HeroImage} alt="logo" width={770} height={370} />
                     </div>
                 </div>
             </div>

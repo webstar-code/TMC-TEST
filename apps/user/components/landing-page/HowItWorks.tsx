@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "ui"
+import { HowItWorks1 } from 'assets/images'
 
 
 function HowItWorks() {
@@ -21,7 +22,7 @@ function HowItWorks() {
 
                 </div>
                 <div className='w-full mx-auto'>
-                    <Image src='/HowItWorks.svg' alt='' height={200} width={400} />
+                    <Image src={HowItWorks1} alt='' height={200} width={400} />
                 </div>
                 <div className="h-full mt-10 flex flex-row">
                     <div className='relative h-[225px]'>
@@ -43,9 +44,9 @@ function HowItWorks() {
                 </div>
             </div>
             <div className='hidden md:block'>
-                <div className='bg-primary px-16 py-16  flex flex-row justify-start gap-40'>
+                <div className='bg-primary px-16 py-16 flex lg:flex-row xl:flex-row md:flex-col md:gap-10 justify-start gap-40'>
                     <div className='h-full flex items-center justify-between mt-14'>
-                        <Image src='/HowItWorks.svg' alt='' width={500} height={700} />
+                        <Image src={HowItWorks1} className='mx-auto' alt='' width={500} height={700} />
                     </div>
                     <div className='flex flex-col gap-2 mt-14'>
                         <div className='text-secondary text-lg'>HOW IT WORKS</div>
