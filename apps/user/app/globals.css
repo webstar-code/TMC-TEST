@@ -11,3 +11,24 @@
     text-wrap: balance;
   }
 }
+
+@keyframes reveal {
+	from {
+    transform: scale(1);
+	}
+	to {
+    transform: scale(0.6);
+  }
+}
+
+@media (min-width: 640px) {
+  .scaling-image {
+    view-timeline-name: --scaling-image;
+    view-timeline-axis: block;
+  
+    animation: linear reveal both;
+    animation-timeline: --scaling-image;
+  
+    animation-range: entry 25% cover 50%;
+  }
+}
