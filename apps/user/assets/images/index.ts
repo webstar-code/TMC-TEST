@@ -24,6 +24,7 @@ import WhatWeDo from './WhatWeDo.svg'
 import WhoAreWe from './WhoAreWe.svg'
 import WhyWeDo from './WhyWeDo.svg'
 import YourHealthCould from './YourHealthCould.svg'
+import ForClinics from './forClinics.svg'
 
 export {
     BBC,
@@ -51,5 +52,6 @@ export {
     WhatWeDo,
     WhoAreWe,
     WhyWeDo,
-    YourHealthCould
+    YourHealthCould,
+    ForClinics,
 }

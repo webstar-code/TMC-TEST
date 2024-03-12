@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { cn } from "ui";
 import { spaceGrotesk } from "./layout";
+import { Button } from "ui";
 export default function Home() {
   return (
     <div className="w-full h-screen bg-primary flex items-center justify-center">
@@ -13,6 +14,9 @@ export default function Home() {
           )}>
           Trackmycare
         </h1>
+        <Button>
+          TrackMyCare
+        </Button>
       </div>
     </div>
   );

@@ -20,11 +20,10 @@ function Header() {
                 </div>
                 <div className='hidden md:flex'>
                     <div className='text-secondary gap-10 flex flex-row font-thin text-md'>
-                        <Link className={`${currentRoute === '/' ? 'font-bold' : ''}`} href="">Home</Link>
-                        <Link className={``} href="">For Paitents</Link>
-                        <Link className={``} href="">For Clinics</Link>
-                        <Link className={``} href="">Pricing</Link>
-                        <Link className={``} href="">Contact Us</Link>
+                        <Link className={`${currentRoute === '/' ? 'font-bold' : ''}`} href="/">Home</Link>
+                        <Link className={`${currentRoute === '/clinics' ? 'font-bold' : ''}`} href="/clinics">For Clients</Link>
+                        <Link className={`${currentRoute === '/pricing' ? 'font-bold' : ''}`} href="/pricing">Pricing</Link>
+                        <Link className={``} href="contact-us">Contact Us</Link>
                     </div>
                 </div>
 
