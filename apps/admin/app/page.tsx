@@ -1,23 +1,17 @@
+'use client'
 import Image from "next/image";
 import { cn } from "ui";
 import { spaceGrotesk } from "./layout";
 import { Button } from "ui";
+import SideNav from "components/SideNav";
+import Header from "components/Header";
+import { useState } from "react";
 export default function Home() {
+  const [sideNavActive, setSideNavActive] = useState<boolean>(false)
   return (
-    <div className="w-full h-screen bg-primary flex items-center justify-center">
-      <div className="flex gap-2">
-        <Image src={"/logo.svg"} alt="logo" width={48} height={48} />
-        <h1
-          className={cn(
-            "text-2xl text-primary-foreground font-semibold",
-            spaceGrotesk.className
-          )}>
-          Trackmycare
-        </h1>
-        <Button>
-          TrackMyCare
-        </Button>
-      </div>
+    <div className="">
+      <Header sideNavActive={sideNavActive} setSideNavActive={setSideNavActive} />
+      <SideNav sideNavActive={sideNavActive} setSideNavActive={setSideNavActive} />
     </div>
   );
 }

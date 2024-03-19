@@ -6,6 +6,24 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+
+.scrollbar-hide::-webkit-scrollbar {
+  width: 3px; /* Set width of the scrollbar */
+
+}
+
+/* Customize scrollbar track */
+.scrollbar-hide::-webkit-scrollbar-track {
+  background: transparent; /* Set background color of the scrollbar track */
+}
+
+/* Customize scrollbar handle */
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  background-color: #ffff; /* Set color of the scrollbar handle */
+  border-radius: 5px; /* Set border radius of the scrollbar handle */
+  margin-left: 6px; /* Set margin-left to 6px */
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

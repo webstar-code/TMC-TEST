@@ -10,7 +10,9 @@ export * from "./components/ui/tabs";
 export * from "./components/ui/accordion"
 export * from "./components/ui/form";
 export * from "./components/ui/select";
-export * from "./components/ui/textarea"
+export * from "./components/ui/textarea";
+export * from "./components/ui/dialog";
+export * from "./components/ui/label"
 
 // lib
 export * from "./lib/utils";
