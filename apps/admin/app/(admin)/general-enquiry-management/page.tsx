@@ -16,6 +16,8 @@ import {
 } from "ui"
 import { Container } from 'components/Container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/Tab';
+import ActiveEnquiry from 'components/general-enquiry-management/ActiveEnquiry';
+import ResolvedEnquiry from 'components/general-enquiry-management/ResolvedEnquiry';
 
 const formSchema = z.object({
     monthly: z.number().min(0, {
@@ -46,8 +48,8 @@ function Page() {
                         <TabsTrigger className='text-md font-bold w-full text-start md:py-2 border-b' value="activeEnquiry">Active Enquiry</TabsTrigger>
                         <TabsTrigger className='text-md font-bold w-full text-start md:py-2 border-b' value="resolvedEnquiry">Resolved Enquiry</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="activeEnquiry">asdfsdfa</TabsContent>
-                    <TabsContent value="resolvedEnquiry">Change your password here.</TabsContent>
+                    <TabsContent value="activeEnquiry"><ActiveEnquiry /></TabsContent>
+                    <TabsContent value="resolvedEnquiry"><ResolvedEnquiry /></TabsContent>
                 </Tabs>
             </div>
         </Container>
