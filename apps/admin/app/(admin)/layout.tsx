@@ -1,7 +1,12 @@
 'use client'
 import Header from "components/Header"
 import SideNav from "components/SideNav"
-import { useState } from 'react'
+import { onAuthStateChanged } from "firebase/auth"
+import { redirect } from "next/navigation"
+
+import { useEffect, useState } from 'react'
+import { auth } from "utils/firebase"
+import { useAdminStore } from "utils/store"
 
 export default function RootLayout({
     children,
@@ -9,6 +14,13 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     const [sideNavActive, setSideNavActive] = useState<boolean>(false)
+
+    const { admin } = useAdminStore()
+
+    if (!admin) {
+        redirect('/login')
+    }
+
     return (
         <html lang="en">
             <body>

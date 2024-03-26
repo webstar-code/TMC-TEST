@@ -6,6 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, Button, FormControl, FormField, FormItem, FormMessage, Input } from 'ui';
+import { auth, db } from 'utils/firebase';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { useAdminStore } from 'utils/store';
+import { redirect } from 'next/navigation';
+import { doc, setDoc } from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
 
 const formSchema = z.object({
     email: z.string().email({
@@ -16,7 +22,6 @@ const formSchema = z.object({
     }),
 });
 
-
 function Page() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -25,12 +30,31 @@ function Page() {
             password: "",
         },
     });
+    const { admin } = useAdminStore()
+
+    console.log('[ADMIN]', admin)
+
+    if (admin) {
+        redirect('/dashboard')
+    }
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
+        signInWithEmailAndPassword(auth, values.email, values.password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log('[ADMIN]', admin)
+
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
+
+        console.log('we are in onSubmit')
         console.log(values);
     }
+
     return (
         <div className='md:bg-primary h-screen relative w-[100%]'>
             <div className='absolute right-0 hidden md:block'>
@@ -44,14 +68,14 @@ function Page() {
                     <h1 className='text-4xl md:text-3xl font-bold text-center'>Sign in</h1>
                     <p className='mt-4 text-center text-base md:hidden'>Sign in to start your journey!</p>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full mt-10">
+                        <form className="space-y-6 w-full mt-10">
                             <FormField
                                 control={form.control}
                                 name="email"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormControl>
-                                            <Input className='bg-secondary text-gray h-10' placeholder="Email" {...field} />
+                                            <Input className='bg-secondary text-gray h-10' placeholder="Please enter E-mail" label="Email" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -64,7 +88,7 @@ function Page() {
                                     <FormItem>
                                         <FormControl>
                                             <div>
-                                                <Input className='bg-secondary text-gray h-10' placeholder="Password" type="password" {...field} />
+                                                <Input className='bg-secondary text-gray h-10' placeholder="Enter your password" label="Password" type="password" {...field} />
                                             </div>
                                         </FormControl>
                                         <FormMessage />
@@ -73,7 +97,7 @@ function Page() {
                             />
                         </form>
                         <div className='py-8 mt-8 w-full sm:w-[60%] md:w-full'>
-                            <Button className='w-full' type='submit'>Continue</Button>
+                            <Button className='w-full h-12' type='button' onClick={form.handleSubmit(onSubmit)}>Continue</Button>
                         </div>
                     </Form>
                     <div className='text-center md:hidden'>
@@ -85,4 +109,4 @@ function Page() {
     )
 }
 
-export default Page
+export default Page;

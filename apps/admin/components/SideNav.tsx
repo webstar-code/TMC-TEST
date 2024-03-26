@@ -1,21 +1,40 @@
 'use client'
 import Image from 'next/image';
-import { Cross, Dashboard, Dashboard_green, EarningsManagement, EnquiryManagement, Hospital, Logout, RequestedRecords, Subscription, UserManagement } from 'public/assets/icons';
+import { Cross, Dashboard, Dashboard_green, EarningsManagement, EnquiryManagement, Hospital, Logout } from 'public/assets/icons';
 import { Logo } from 'public/assets/images';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from "ui"
+import { Icons } from './Icons';
+import { redirect, usePathname, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { authApi } from 'api/authApi1';
+import Router from 'next/router';
 
-export function SideNavItem({ icon, title }: { icon: string, title: string }) {
+
+type IconProps = React.SVGProps<SVGSVGElement>;
+
+export function SideNavItem({ IconComponent, title, pathname }: { IconComponent: React.FC<IconProps>, title: string, pathname: string }) {
+
+    const currPathname = usePathname()
+    const searchParams = useSearchParams()
+    console.log(currPathname)
+
     return (
-        <div className='flex flex-row py-4 md:py-2 px-2 rounded-md'>
+        <div className={` ${currPathname === pathname ? 'bg-secondary flex flex-row md:py-2 px-2 rounded-md' : 'bg-primary flex flex-row py-4 md:py-2 px-2 rounded-md'} 'flex flex-row py-2 md:py-2 px-2 rounded-md'`}>
             <div className='flex flex-row gap-3'>
-                <Image src={icon} className='z-30' alt='' height={20} width={20} />
-                <h1 className='text-secondary'>{title}</h1>
+                {currPathname === pathname &&
+                    <IconComponent stroke='primary' fill='#004C4C' width={20} height={20} />
+
+                }
+                {currPathname !== pathname &&
+                    <IconComponent width={20} height={20} />
+                }
+                <h1 className={` ${currPathname === pathname ? 'text-primary' : 'text-secondary'} font-medium`}>{title}</h1>
             </div>
         </div >
     )
@@ -23,8 +42,16 @@ export function SideNavItem({ icon, title }: { icon: string, title: string }) {
 
 function SideNav({ sideNavActive, setSideNavActive }: { sideNavActive: boolean, setSideNavActive: Function }) {
 
+    const currPathname = usePathname()
+    const searchParams = useSearchParams()
+    console.log(currPathname)
+    const handleLogout = async () => {
+        await authApi.logout();
+        
+    };
+
     return (
-        <>
+        <div className='z-50'>
             {
                 sideNavActive &&
                 <div className={`side-nav fixed top-0 left-0 w-screen h-screen md:hidden transition-transform transform ${sideNavActive ? 'translate-x-0' : '-translate-x-full'}`} >
@@ -41,12 +68,12 @@ function SideNav({ sideNavActive, setSideNavActive }: { sideNavActive: boolean, 
 
                         <div className='mt-10'>
                             <div>Main Menu</div>
-                            <div className='w-full mt-4'>
+                            <div className='w-full mt-4 px-2'>
                                 <Accordion type="single" collapsible>
                                     <AccordionItem value="item-1">
                                         <AccordionTrigger>
-                                            <div className='flex flex-row gap-3'>
-                                                <Image src={UserManagement} alt='' height={20} width={20} />
+                                            <div className='flex flex-row gap-3 items-center justify-center'>
+                                                <Icons.userManagement stroke="white" width={22} height={22} />
                                                 <h1>User Managment</h1>
                                             </div>
                                         </AccordionTrigger>
@@ -59,28 +86,28 @@ function SideNav({ sideNavActive, setSideNavActive }: { sideNavActive: boolean, 
                                     </AccordionItem>
                                 </Accordion>
                             </div>
-                            <SideNavItem icon={RequestedRecords} title='Requested Records' />
-                            <SideNavItem icon={EarningsManagement} title='Earnings Management' />
-                            <SideNavItem icon={Subscription} title='Subscription' />
+                            <Link href='/requested-records'><SideNavItem IconComponent={Icons.requestedRecords} pathname="/requested-records" title='Requested Records' /></Link>
+                            <Link href='/earnings-management'><SideNavItem IconComponent={Icons.earningsManagement} pathname="/earnings-manangement" title='Earnings Management' /></Link>
+                            <Link href='/subscription'><SideNavItem IconComponent={Icons.subscription} pathname="/subscription" title='Subscription' /></Link>
                             <div className='w-full'>
-                                <Accordion type="single" collapsible>
+                                <Accordion className="" type="single" collapsible>
                                     <AccordionItem value="item-1">
                                         <AccordionTrigger>
-                                            <div className='flex flex-row gap-3'>
-                                                <Image src={EnquiryManagement} alt='' height={20} width={20} />
+                                            <div className='flex flex-row gap-3 items-center px-2'>
+                                                <Icons.enquiryManagement stroke='primary' width={22} height={22} />
                                                 <h1>Enquiry Managment</h1>
                                             </div>
                                         </AccordionTrigger>
                                         <AccordionContent>
-                                            <div className='text-base flex flex-col gap-2'>
-                                                <h1 className='ml-8 rounded-sm py-1'>General</h1>
-                                                <h1 className='ml-8 rounded-sm py-1'>Support</h1>
+                                            <div className='text-base flex flex-col'>
+                                                <Link href='general-enquiry-management'><h1 className={`${currPathname === '/general-enquiry-management' ? "bg-secondary text-[#004C4C]" : ""} ml-8 rounded-sm px-2 py-1`}>General</h1></Link>
+                                                <Link href='support-enquiry-management'><h1 className={`${currPathname === '/support-enquiry-management' ? "bg-secondary text-[#004C4C]" : ""} ml-8 rounded-sm px-2 py-1`}>Support</h1></Link>
                                             </div>
                                         </AccordionContent>
                                     </AccordionItem>
                                 </Accordion>
                             </div>
-                            <SideNavItem icon={Hospital} title='Clinic Management' />
+                            <Link href='/clinics-management'><SideNavItem IconComponent={Icons.hospital} pathname='/clinics-management' title='Clinic Management' /></Link>
                             <div className='flex flex-row py-4 mt-10'>
                                 <div className='flex flex-row gap-3'>
                                     <Image src={Logout} alt='' height={20} width={20} />
@@ -104,13 +131,13 @@ function SideNav({ sideNavActive, setSideNavActive }: { sideNavActive: boolean, 
                         Main Menu
                     </div>
                     <div className='overflow-y-scroll px-6 gap-3 scrollbar-hide flex flex-col'>
-                        <SideNavItem icon={Dashboard} title='Dashboard' />
+                        <Link href='/dashboard'><SideNavItem IconComponent={Icons.dashboard} pathname='/dashboard' title='Dashboard' /></Link>
                         <div className='w-full text-secondary px-2'>
                             <Accordion type="single" collapsible>
                                 <AccordionItem value="item-1">
                                     <AccordionTrigger>
                                         <div className='flex flex-row gap-3'>
-                                            <Image src={UserManagement} alt='' height={20} width={20} />
+                                            <Icons.userManagement stroke="#fff2" height={22} width={22} />
                                             <h1 className='text-secondary'>User Managment</h1>
                                         </div>
                                     </AccordionTrigger>
@@ -123,40 +150,35 @@ function SideNav({ sideNavActive, setSideNavActive }: { sideNavActive: boolean, 
                                 </AccordionItem>
                             </Accordion>
                         </div>
-                        <SideNavItem icon={RequestedRecords} title='Requested Records' />
-                        <SideNavItem icon={EnquiryManagement} title='Earnings Management' />
-                        <SideNavItem icon={Subscription} title='Subscription' />
+                        <Link href='/requested-records'><SideNavItem IconComponent={Icons.requestedRecords} pathname='/requested-records' title='Requested Records' /></Link>
+                        <Link href='/earnings-management'><SideNavItem IconComponent={Icons.earningsManagement} pathname='/earnings-management' title='Earnings Management' /></Link>
+                        <Link href='/subscription'><SideNavItem IconComponent={Icons.subscription} pathname='/subscription' title='Subscription' /></Link>
                         <div className='w-full text-secondary px-2'>
-                            <Accordion type="single" collapsible>
+                            <Accordion className="" type="single" collapsible>
                                 <AccordionItem value="item-1">
                                     <AccordionTrigger>
                                         <div className='flex flex-row gap-3'>
-                                            <Image src={UserManagement} alt='' height={20} width={20} />
+                                            <Icons.enquiryManagement stroke='primary' width={22} height={22} />
                                             <h1 className='text-secondary'>Enquiry Managment</h1>
                                         </div>
                                     </AccordionTrigger>
                                     <AccordionContent>
                                         <div className='flex flex-col gap-2'>
-                                            <h1 className='ml-8 rounded-sm py-1 text-secondary'>General</h1>
-                                            <h1 className='ml-8 rounded-sm py-1 text-secondary'>Support</h1>
+                                            <Link href='general-enquiry-management'><h1 className={`${currPathname === '/general-enquiry-management' ? "bg-secondary text-[#004C4C]" : ""} ml-8 rounded-sm px-2 py-1 `}>General</h1></Link>
+                                            <Link href='support-enquiry-management'><h1 className={`${currPathname === '/support-enquiry-management' ? "bg-secondary text-[#004C4C]" : ""} ml-8 rounded-sm px-2 py-1 `}>Support</h1></Link>
                                         </div>
                                     </AccordionContent>
                                 </AccordionItem>
                             </Accordion>
                         </div>
-                        <SideNavItem icon={Hospital} title='Clinic Management' />
+                        <Link href='/clinics-management'><SideNavItem IconComponent={Icons.hospital} pathname='/clinics-management' title='Clinic Management' /></Link>
                         <div className='mt-6'>
-                            <SideNavItem icon={Logout} title='Logout' />
+                            <div onClick={handleLogout}><SideNavItem IconComponent={Icons.logout} pathname='/' title='Logout' /></div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
-
-        </>
-
-
+        </div>
     );
 }
 

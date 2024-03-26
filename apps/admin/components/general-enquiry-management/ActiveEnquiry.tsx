@@ -1,4 +1,5 @@
 'use client'
+import { Icons } from 'components/Icons'
 import MobileSortDialog from 'components/MobileSortDialog'
 import Image from 'next/image'
 import { Sort } from 'public/assets/icons'

@@ -49,7 +49,7 @@ function Page() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormControl>
-                                            <Input className='bg-secondary text-xs text-gray h-10' placeholder='Monthly' {...field} />
+                                            <Input className='bg-secondary text-xs text-gray z-10 h-10' label="Monthly" placeholder='Monthly' {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -61,7 +61,7 @@ function Page() {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormControl>
-                                            <Input className='bg-secondary text-xs text-gray h-10' placeholder='Annually' {...field} />
+                                            <Input className='bg-secondary text-xs text-gra z-10 h-10' label="Annually" placeholder='Annually' {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

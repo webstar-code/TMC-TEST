@@ -43,7 +43,7 @@ function Page() {
     };
 
     return (
-        <Container title="General Enquiry Management">
+        <Container title="Support Enquiry Management">
             <div>
                 <Tabs defaultValue="activeEnquiry" className="w-full">
                     <TabsList className='bg-secondary w-full md:w-1/2 mt-6'>
