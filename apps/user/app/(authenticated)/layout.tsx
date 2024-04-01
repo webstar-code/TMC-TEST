@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "lib/firebase";
@@ -13,10 +13,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       if (user) {
         getUser(user.uid);
       }
-    })
+    });
   }, []);
 
-  return <>
-    {children}
-  </>
+  return <>{children}</>;
 }

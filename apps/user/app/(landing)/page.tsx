@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Footer from "components/Footer";
 import Header from "components/Header";
 import AboutUs from "components/landing-page/AboutUs";
@@ -11,7 +11,6 @@ import Services from "components/landing-page/Services";
 import StartNow from "components/landing-page/StartNow";
 import Support from "components/landing-page/Support";
 import WhyUse from "components/landing-page/WhyUse";
-
 
 export default function Home() {
   return (

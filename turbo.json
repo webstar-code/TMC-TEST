@@ -4,7 +4,8 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
+      "dotEnv": [".env.production.local", ".env.local", ".env.production", ".env"]
     },
     "lint": {
       "dependsOn": ["^build"]
@@ -12,7 +13,8 @@
     "check-types": {},
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dotEnv": [".env.development.local", ".env.local", ".env.development", ".env"]
     },
     "start": {},
     "start:local": {},

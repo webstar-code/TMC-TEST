@@ -1,8 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
-import { getFunctions } from 'firebase/functions';
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { getFunctions } from "firebase/functions";
 
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_apiKey,
@@ -21,11 +21,11 @@ export const storage = getStorage(app);
 export const functions = getFunctions(app);
 
 export const dbCollections = {
-  users: "users"
-}
+  users: "users",
+};
 
 export const callable = {
-  sendOtp: 'sendOtp',
-  verifyOtp: 'verifyOtp',
-  resetPassword: 'resetPassoword'
+  sendOtp: "sendOtp",
+  verifyOtp: "verifyOtp",
+  resetPassword: "resetPassoword",
 };
