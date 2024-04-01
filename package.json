@@ -21,7 +21,8 @@
     "tsconfig": "yarn workspace tsconfig",
     "ui": "yarn workspace ui",
     "ui:add": "yarn workspace ui ui:add",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "postinstall": "husky"
   },
   "devDependencies": {
     "eslint": "^8.53.0",
@@ -35,8 +36,8 @@
   },
   "lint-staged": {
     "(apps|packages)/**/*.{js,ts,jsx,tsx}": [
-      "yarn run format",
-      "eslint --fix"
+      "eslint --fix",
+      "yarn run format"
     ],
     "*.json": [
       "yarn run format"
@@ -44,7 +45,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run precommit"
+      "pre-commit": "yarn run precommit"
     }
   },
   "engines": {
