@@ -1,11 +1,17 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local"],
+  "globalDependencies": ["**/.env.*local", "SENDGRID_KEY"],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
+      "env": ["SENDGRID_KEY"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "dotEnv": [".env.production.local", ".env.local", ".env.production", ".env"]
+      "dotEnv": [
+        ".env.production.local",
+        ".env.local",
+        ".env.production",
+        ".env"
+      ]
     },
     "lint": {
       "dependsOn": ["^build"]
@@ -14,7 +20,12 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "dotEnv": [".env.development.local", ".env.local", ".env.development", ".env"]
+      "dotEnv": [
+        ".env.development.local",
+        ".env.local",
+        ".env.development",
+        ".env"
+      ]
     },
     "start": {},
     "start:local": {},
