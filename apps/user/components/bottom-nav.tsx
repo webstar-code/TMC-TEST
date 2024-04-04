@@ -6,7 +6,7 @@ export function BottomNav() {
   const pathName = usePathname();
 
   return (
-    <div className="w-full h-20 fixed bottom-0 p-4 rounded-t-2xl bg-primary text-primary-foreground">
+    <div className="w-full h-20 p-4 rounded-t-2xl bg-primary text-primary-foreground">
       <div className="w-full flex items-center justify-evenly">
         <Link
           href={ROUTES.exams}

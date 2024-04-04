@@ -15,6 +15,8 @@ export * from "./components/ui/label";
 export * from "./components/ui/checkbox";
 export * from "./components/custom/Input";
 export * from "./components/custom/Tabs";
+export * from "./components/ui/breadcrumb";
+export * from "./components/ui/skeleton";
 
 // lib
 export * from "./lib/utils";

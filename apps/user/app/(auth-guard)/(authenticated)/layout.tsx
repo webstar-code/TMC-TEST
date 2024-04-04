@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="fixed bottom-0 left-0 w-full block md:hidden overflow-hidden z-40">
         <BottomNav />
       </div>
-      {children}
+      <div className="w-full h-full">{children}</div>
     </div>
   );
 }
