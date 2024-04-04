@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         getUser(user.uid);
       }
     });
-  }, []);
+  }, [getUser]);
 
   return <>{children}</>;
 }

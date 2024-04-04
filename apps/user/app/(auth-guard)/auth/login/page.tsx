@@ -254,7 +254,7 @@ export default function Login() {
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      "Please wait"
+                      Please wait
                     </>
                   ) : (
                     "Continue"
@@ -420,7 +420,7 @@ function SetPassword({
                   {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      "Please wait"
+                      Please wait
                     </>
                   ) : (
                     "Continue"
