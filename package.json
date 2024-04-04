@@ -34,6 +34,9 @@
     "tsconfig": "*",
     "turbo": "^1.10.16"
   },
+  "resolutions": {
+    "@types/mime": "3.0.4"
+  },
   "lint-staged": {
     "(apps|packages)/**/*.{js,ts,jsx,tsx}": [
       "eslint --fix",
@@ -53,5 +56,6 @@
     "yarn": ">= 1.17.3",
     "node": ">= 12.5.0"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "yarn@1.22.19",
+  "version": "0.0.0"
 }

@@ -18,7 +18,7 @@ const Input = React.forwardRef<HTMLInputElement, CustomInputProps>(
     };
 
     return (
-      <div className="relative cursor-text flex items-center">
+      <div className="w-full relative cursor-text flex items-center">
         <label
           className={`pointer-events-none absolute left-3 transition-all bg-secondary z-10 duration-300 font-medium
            ${
@@ -36,6 +36,7 @@ const Input = React.forwardRef<HTMLInputElement, CustomInputProps>(
           } pt-2 border-b  focus:border-primary transition-all duration-300  hover:shadow-[0px_0px_0px_2px_rgb(232,237,235,1)]`}
           ref={ref}
           {...props}
+          value={value}
           onFocus={handleFocus}
           onBlur={handleBlur}
         />
