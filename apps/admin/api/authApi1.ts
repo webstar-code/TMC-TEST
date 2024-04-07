@@ -5,18 +5,18 @@ import { auth, db } from "utils/firebase";
 import { v4 as uuidv4 } from "uuid";
 
 const getAdminById = async (id: string) => {
-  console.log("we are get admin");
   const ref = doc(db, "admin", id);
 
   const docSnap = await getDoc(ref);
-  console.log(docSnap);
-  console.log("[Data]", docSnap.data());
-  const data = docSnap.data();
-  return data;
-};
 
-const createAdmin = async (email: string) => {
-  const id = uuidv4();
+  if (docSnap.exists()) {
+    const data = docSnap.data();
+    return data;
+  } else {
+    return null; // Or handle the case where the document doesn't exist
+  }
+};
+const createAdmin = async (email: string, id: string) => {
   const newAdmin = {
     id: id,
     lastSignedInAt: new Date(),

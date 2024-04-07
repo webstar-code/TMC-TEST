@@ -14,14 +14,6 @@ import {
 } from "ui";
 import SuccessModal from "components/subscription/SuccessModal";
 import ConfirmModal from "components/subscription/ConfirmModal";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "ui";
 import { Container } from "components/Container";
 
 const formSchema = z.object({
@@ -40,10 +32,7 @@ function Page() {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    // Handle form submission
-    console.log(data);
-  };
+  const onSubmit = (data: z.infer<typeof formSchema>) => {};
 
   return (
     <Container title="Subscription">

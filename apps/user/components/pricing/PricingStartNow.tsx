@@ -70,7 +70,9 @@ function PricingStartNow() {
           </div>
         </div>
         <div className="flex justify-center md:justify-start mt-6">
-          <Button className="bg-secondary text-primary h-10 w-[50%]">
+          <Button
+            varient={"primary"}
+            className="bg-secondary text-primary h-10 w-[50%]">
             Start Tracking
           </Button>
         </div>

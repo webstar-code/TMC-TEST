@@ -1,20 +1,12 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "ui";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "ui";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "ui";
 import { Input } from "ui";
 import {
   Select,
@@ -25,6 +17,11 @@ import {
 } from "ui";
 import { Textarea } from "ui";
 import { ContactUs } from "assets/images";
+// import { doc, setDoc } from 'firebase/firestore'
+// import { db } from 'utils/firebase'
+import { v4 as uuidv4 } from "uuid";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "lib/firebase";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -43,6 +40,8 @@ const formSchema = z.object({
 });
 
 function Contact() {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,11 +52,29 @@ function Contact() {
       message: "",
     },
   });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setLoading(true);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+      const id = uuidv4();
+      const newEnquiry = {
+        id: id,
+        createdAt: new Date(),
+        email: values.email,
+        role: values.role,
+        name: values.name,
+        phoneNumber: values.phoneNumber,
+        message: values.message,
+        status: "active",
+      };
+
+      const docRef = doc(db, "enquiry", id);
+      await setDoc(docRef, newEnquiry);
+    } catch (error) {
+      console.error("Error submitting enquiry:", error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -110,14 +127,14 @@ function Contact() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select>
+                    <Select onValueChange={field.onChange}>
                       <SelectTrigger className="bg-primary w-full">
                         <SelectValue placeholder="Select Role" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="light">Paitent</SelectItem>
-                        <SelectItem value="dark">Doctor</SelectItem>
-                        <SelectItem value="system">System</SelectItem>
+                        <SelectItem value="Paitent">Paitent</SelectItem>
+                        <SelectItem value="Doctor">Doctor</SelectItem>
+                        <SelectItem value="System">System</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -174,7 +191,8 @@ function Contact() {
               )}
             />
             <Button
-              className="bg-secondary text-primary h-10 w-full"
+              loading={loading}
+              className="bg-secondary text-primary h-10 w-full hover:bg-secondary"
               type="submit">
               Submit
             </Button>

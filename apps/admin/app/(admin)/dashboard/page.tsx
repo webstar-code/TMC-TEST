@@ -1,7 +1,7 @@
 import { Container } from "components/Container";
 import React from "react";
 
-function page() {
+function Dashboard() {
   return (
     <Container title="Dashboard">
       <div></div>
@@ -9,4 +9,4 @@ function page() {
   );
 }
 
-export default page;
+export default Dashboard;
