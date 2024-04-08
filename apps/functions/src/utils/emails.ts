@@ -7,7 +7,7 @@ const emailConfig = {
 };
 
 const TEMPLATES = {
-  otpCode: "",
+  otpCode: "d-02f49243b726428881935347f1b396ff",
 };
 
 async function sendEmail(email: string, templateId: string, data: any) {
@@ -18,7 +18,7 @@ async function sendEmail(email: string, templateId: string, data: any) {
     dynamicTemplateData: { ...data },
   };
   await sgMail.send(msg).catch((error) => {
-    console.error(error);
+    console.error(error, error.response.body);
   });
 }
 

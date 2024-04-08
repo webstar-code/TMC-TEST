@@ -6,4 +6,7 @@ export const ROUTES = {
   familyMembers: "/family-members",
   support: "/support",
   subscription: "/subscription",
+  login: "/auth/login",
+  acceptLegal: "/accept-legal",
+  verifyPatient: "/verify-patient",
 };

@@ -14,8 +14,10 @@ export interface IUser {
   preferences: {
     langauge: "en";
   };
+  patientId?: string;
   tncConsent?: LegalConsent;
-  privacyPolicy?: LegalConsent;
+  privacyPolicyConsent?: LegalConsent;
+  patientDetailsSubmitted: boolean;
   createdAt: Date | string;
   updatedAt: Date | string;
   isSubscriptionPurchased: boolean;
@@ -27,10 +29,11 @@ interface UserStoreState {
   getUser: (id: string) => void;
 }
 
-export const useVendorStore = create<UserStoreState>((set) => ({
+export const useUserStore = create<UserStoreState>((set) => ({
   user: null,
   getUser: async (id) => {
     const result = await authApi.getUserById(id);
     set({ user: result.data });
+    return result;
   },
 }));

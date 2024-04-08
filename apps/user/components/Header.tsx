@@ -6,6 +6,7 @@ import { ChevronDown, Languages } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logo } from "assets/images";
+import { ROUTES } from "utils/routes";
 
 function Header() {
   const currentRoute = usePathname();
@@ -44,7 +45,7 @@ function Header() {
             <Languages color="white" size={20} />
             <ChevronDown color="white" size={20} />
           </div>
-          <Link href={"/auth/login"}>
+          <Link href={ROUTES.login}>
             <Button variant={"secondary"} className="min-w-[100px]" size={"sm"}>
               Log in{" "}
             </Button>

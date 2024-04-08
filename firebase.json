@@ -1,7 +1,8 @@
 {
   "functions": [
     {
-      "source": "functions",
+      "runtime": "nodejs18",
+      "source": "./apps/functions",
       "codebase": "default",
       "ignore": [
         "node_modules",
