@@ -1,3 +1,5 @@
+import { Search } from "lucide";
+import { Sort } from "public/assets/icons";
 import React from "react";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
@@ -403,8 +405,8 @@ export const Icons = {
   ),
   backArrow: (props: IconProps) => (
     <svg
-      width="16"
-      height="16"
+      width={props.width}
+      height={props.height}
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
@@ -413,6 +415,78 @@ export const Icons = {
         clip-rule="evenodd"
         d="M8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893L0.292893 7.29289C-0.0976315 7.68342 -0.0976315 8.31658 0.292893 8.70711L7.29289 15.7071C7.68342 16.0976 8.31658 16.0976 8.70711 15.7071C9.09763 15.3166 9.09763 14.6834 8.70711 14.2929L3.41421 9H15C15.5523 9 16 8.55228 16 8C16 7.44772 15.5523 7 15 7H3.41421L8.70711 1.70711C9.09763 1.31658 9.09763 0.683417 8.70711 0.292893Z"
         fill="#6B6B6B"
+      />
+    </svg>
+  ),
+  breadcrumbSeparator: (props: IconProps) => (
+    <svg
+      width={props.width}
+      height={props.height}
+      viewBox="0 0 14 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0 10.59L4.58 6L0 1.41L1.41 0L7.41 6L1.41 12L0 10.59Z"
+        fill="#6B6B6B"
+      />
+      <path
+        d="M6 10.59L10.58 6L6 1.41L7.41 0L13.41 6L7.41 12L6 10.59Z"
+        fill="#6B6B6B"
+      />
+    </svg>
+  ),
+  search: (props: IconProps) => (
+    <svg
+      width={props.width}
+      height={props.height}
+      viewBox="0 0 23 22"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M10.7132 19.2507C15.6009 19.2507 19.5631 15.3518 19.5631 10.5423C19.5631 5.73284 15.6009 1.83398 10.7132 1.83398C5.82553 1.83398 1.86328 5.73284 1.86328 10.5423C1.86328 15.3518 5.82553 19.2507 10.7132 19.2507Z"
+        stroke="#868686"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M20.496 20.1673L18.6328 18.334"
+        stroke="#868686"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
+  upperSort: (props: IconProps) => (
+    <svg
+      width="10"
+      height="7"
+      viewBox="0 0 10 7"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M1 5.3335L5 1.3335L9 5.3335"
+        stroke="#004C4C"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
+  downSort: (props: IconProps) => (
+    <svg
+      width="10"
+      height="7"
+      viewBox="0 0 10 7"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M1 1.6665L5 5.6665L9 1.6665"
+        stroke="#004C4C"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
   ),

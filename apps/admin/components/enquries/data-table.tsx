@@ -36,6 +36,12 @@ interface DataTableProps<Enquiry, TValue> {
   data: Enquiry[];
   type: string;
   refetch: () => void;
+  isActive: boolean;
+  setIsActive: Function;
+  selectedDateOption: string;
+  selectedNameOption: string;
+  setSelectedDateOption: Function;
+  setSelectedNameOption: Function;
 }
 
 export function DataTable<Enquiry, TValue>({
@@ -43,6 +49,12 @@ export function DataTable<Enquiry, TValue>({
   data,
   type,
   refetch,
+  isActive,
+  setIsActive,
+  selectedDateOption,
+  selectedNameOption,
+  setSelectedDateOption,
+  setSelectedNameOption,
 }: DataTableProps<Enquiry, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -75,7 +87,7 @@ export function DataTable<Enquiry, TValue>({
 
   return (
     <div className="rounded-md w-[100%] md:block hidden">
-      <div className="py-2 w-[40%]">
+      {/* <div className="py-2 w-[40%]">
         <Input
           placeholder="Search by Enquiry ID..."
           value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
@@ -84,19 +96,59 @@ export function DataTable<Enquiry, TValue>({
           }
           className="w-[100%] text-black"
         />
-      </div>
+      </div> */}
       <Table className="border border-none">
         <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
+          {table.getHeaderGroups().map((headerGroup: any) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
+              {headerGroup.headers.map((header: any) => (
                 <TableHead className="text-primary font-bold" key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                  {header.isPlaceholder ? null : header.column.id === "name" ? (
+                    <div className="flex items-center">
+                      <span className="mr-2">
+                        {header.column.columnDef.header}
+                      </span>
+                      <div className="flex flex-col items-center gap-[2px] cursor-pointer z-50">
+                        <div
+                          onClick={() => {
+                            setSelectedNameOption("az");
+                          }}>
+                          <Icons.upperSort />
+                        </div>
+                        <div
+                          onClick={() => {
+                            setSelectedNameOption("za");
+                          }}>
+                          <Icons.downSort />
+                        </div>
+                      </div>
+                    </div>
+                  ) : header.column.id === "createdAt" ? (
+                    <div className="flex items-center">
+                      <span className="mr-2">
+                        {header.column.columnDef.header}
+                      </span>
+                      <div className="flex flex-col items-center gap-[2px] cursor-pointer">
+                        <div
+                          onClick={() => {
+                            setSelectedDateOption("no");
+                          }}>
+                          <Icons.upperSort />
+                        </div>
+                        <div
+                          onClick={() => {
+                            setSelectedDateOption("on");
+                          }}>
+                          <Icons.downSort />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )
+                  )}
                 </TableHead>
               ))}
             </TableRow>
@@ -105,17 +157,20 @@ export function DataTable<Enquiry, TValue>({
         <TableBody>
           {table
             .getRowModel()
-            .rows.filter((row) => row.original.status === type) // Filter rows by status
-            .map((row) => (
+            .rows.filter((row: any) => row.original.status === type) // Filter rows by status
+            .map((row: any, ind: number) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 className="border border-none">
-                {row.getVisibleCells().map((cell) => {
+                {row.getVisibleCells().map((cell: any) => {
                   if (cell.column.id === "status") {
                     return (
                       <TableCell
                         key={cell.id}
+                        onClick={() => {
+                          handleClick(row.original.id);
+                        }}
                         className="flex flex-row gap-3 justify-center cursor-pointer">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -159,14 +214,34 @@ export function DataTable<Enquiry, TValue>({
                   if (cell.column.id === "createdAt") {
                     return (
                       <TableCell
+                        onClick={() => {
+                          handleClick(row.original.id);
+                        }}
                         key={cell.id}
                         className="mt-4 w-[120px] cursor-pointer">
                         {format(new Date(cell.getValue()), "d, MMM yyyy")}
                       </TableCell>
                     );
                   }
+                  if (cell.column.id === "Sno") {
+                    return (
+                      <TableCell
+                        onClick={() => {
+                          handleClick(row.original.id);
+                        }}
+                        key={cell.id}
+                        className="cursor-pointer">
+                        {ind + 1}
+                      </TableCell>
+                    );
+                  }
                   return (
-                    <TableCell className="capitalize" key={cell.id}>
+                    <TableCell
+                      onClick={() => {
+                        handleClick(row.original.id);
+                      }}
+                      className="cursor-pointer"
+                      key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

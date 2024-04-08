@@ -25,9 +25,18 @@ export interface Enquiry {
   status: string;
 }
 import { Button } from "ui";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { enquiryApi } from "api/enquiryApi";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [enquiry, setEnquiry] = useState<Enquiry | undefined>();
+  const router = useRouter();
+
+  const handleButtonClick = async (id: string) => {
+    toast("Status changed to the resolved");
+    enquiryApi.updateEnquiry(id);
+  };
 
   useEffect(() => {
     const fetchEnquiry = async () => {
@@ -63,26 +72,36 @@ export default function Page({ params }: { params: { id: string } }) {
         <div className="h-14 border-b flex items-center px-6 border-gray-200">
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem>
-                <div className="px-2">
-                  <Icons.backArrow
-                    fill="black"
-                    height={6}
-                    width="6px"
-                    stroke="black"
-                  />
-                </div>
-              </BreadcrumbItem>
+              <BreadcrumbItem></BreadcrumbItem>
               <BreadcrumbItem>
                 <BreadcrumbLink
-                  href="/enquires/general"
-                  className="text-primary font-light hover:underline">
-                  General Enquiry
+                  onClick={() => {
+                    router.push("/enquires/general");
+                  }}
+                  className="text-primary cursor-pointer font-light hover:underline">
+                  <div className="flex flex-row items-center gap-4">
+                    <Icons.backArrow
+                      fill="black"
+                      height={12}
+                      width={12}
+                      stroke="black"
+                    />
+                    <h1>General Enquiry</h1>
+                  </div>
                 </BreadcrumbLink>
               </BreadcrumbItem>
-              <BreadcrumbSeparator className="font-light" />
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-light">Enquiry</BreadcrumbPage>
+                <BreadcrumbPage className="font-light">
+                  <div className="flex flex-row items-center gap-4">
+                    <Icons.breadcrumbSeparator
+                      fill="black"
+                      height={12}
+                      width={12}
+                      stroke="black"
+                    />
+                    <h1>Enquiry</h1>
+                  </div>
+                </BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -128,10 +147,22 @@ export default function Page({ params }: { params: { id: string } }) {
           />
         </div>
         <div className="flex flex-row gap-3 w-full md:mt-6 md:w-1/4 mt-20">
-          <Button className="w-1/2 h-10 bg-white border border-primary text-primary hover:bg-white">
+          <Button
+            onClick={() => {
+              router.push("/enquires/general");
+            }}
+            className="w-1/2 h-10 bg-white border border-primary text-primary hover:bg-white">
             Go Back
           </Button>
-          <Button className="w-1/2 h-10">Mark Resolved</Button>
+          {enquiry?.status === "active" && (
+            <Button
+              onClick={() => {
+                handleButtonClick(params.id);
+              }}
+              className="w-1/2 h-10">
+              Mark Resolved
+            </Button>
+          )}
         </div>
       </div>
     </div>

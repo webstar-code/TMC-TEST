@@ -24,6 +24,8 @@ import { Pagination } from "components/Pagination";
 import { usePagination } from "hooks/usePagination";
 import { Drawer, DrawerContent, DrawerTrigger } from "ui";
 import MobileDataList from "components/enquries/MobileDataList";
+import { Input } from "ui";
+import { Icons } from "components/Icons";
 
 export interface Enquiry {
   id: string;
@@ -36,13 +38,15 @@ export interface Enquiry {
   status: string;
 }
 
-function ResolvedEnquiry() {
+function ActiveEnquiry() {
+  // const [prevEnquires, setPrevEnquires] = useState<Enquiry[]>()
   const [, setEnquires] = useState<Enquiry[]>();
   const [count, setCount] = useState<number>(0);
   const [selectedNameOption, setSelectedNameOption] =
     useState<string>("default");
   const [selectedDateOption, setSelectedDateOption] =
     useState<string>("default");
+  const [id, setId] = useState<string>();
 
   const {
     updatePaginationMap,
@@ -62,50 +66,68 @@ function ResolvedEnquiry() {
       selectedDateOption === "on" ? "desc" : "asc";
 
     try {
-      let q;
+      if (id) {
+        const docRef = doc(db, "enquiry", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const fetchedEnquiries: Enquiry[] = docSnap.docs.map((doc: any) => ({
+            id: doc.id,
+            createdAt: doc.data().createdAt.toDate(),
+            email: doc.data().email,
+            message: doc.data().message,
+            name: doc.data().name,
+            phoneNumber: doc.data().phoneNumber,
+            role: doc.data().role,
+            status: doc.data().status,
+          }));
 
-      q = query(
-        collection(db, "enquiry"),
-        where("status", "==", "resolved"),
-        orderBy("name", sortingNameOrder),
-        orderBy("createdAt", sortingDateOrder),
-        limit(resultsPerPage)
-      );
-
-      if (page > 1) {
-        if (startAfterId) {
-          const cursor = await getDoc(doc(db, "enquiry", startAfterId));
-          q = query(
-            collection(db, "enquiry"),
-            where("status", "==", "resolved"),
-            orderBy("name", sortingNameOrder),
-            orderBy("createdAt", sortingDateOrder),
-            startAfter(cursor),
-            limit(resultsPerPage)
-          );
+          return fetchedEnquiries as Enquiry[];
         }
+      } else {
+        let q;
+
+        q = query(
+          collection(db, "enquiry"),
+          where("status", "==", "resolved"),
+          orderBy("name", sortingNameOrder),
+          orderBy("createdAt", sortingDateOrder),
+          limit(resultsPerPage)
+        );
+
+        if (page > 1) {
+          if (startAfterId) {
+            const cursor = await getDoc(doc(db, "enquiry", startAfterId));
+            q = query(
+              collection(db, "enquiry"),
+              where("status", "==", "resolved"),
+              orderBy("name", sortingNameOrder),
+              orderBy("createdAt", sortingDateOrder),
+              startAfter(cursor),
+              limit(resultsPerPage)
+            );
+          }
+        }
+
+        const querySnapshot = await getDocs(q);
+        const fetchedEnquiries: Enquiry[] = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          createdAt: doc.data().createdAt.toDate(),
+          email: doc.data().email,
+          message: doc.data().message,
+          name: doc.data().name,
+          phoneNumber: doc.data().phoneNumber,
+          role: doc.data().role,
+          status: doc.data().status,
+        }));
+        setEnquires(fetchedEnquiries);
+
+        updatePaginationMap(page, {
+          first: fetchedEnquiries?.[0].id,
+          last: fetchedEnquiries?.[fetchedEnquiries.length - 1].id,
+        });
+
+        return fetchedEnquiries as Enquiry[];
       }
-
-      const querySnapshot = await getDocs(q);
-      const fetchedEnquiries: Enquiry[] = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        createdAt: doc.data().createdAt.toDate(),
-        email: doc.data().email,
-        message: doc.data().message,
-        name: doc.data().name,
-        phoneNumber: doc.data().phoneNumber,
-        role: doc.data().role,
-        status: doc.data().status,
-      }));
-
-      setEnquires(fetchedEnquiries);
-
-      updatePaginationMap(page, {
-        first: fetchedEnquiries?.[0].id,
-        last: fetchedEnquiries?.[fetchedEnquiries.length - 1].id,
-      });
-
-      return fetchedEnquiries as Enquiry[];
     } catch (error) {
       console.error("Error fetching collection:", error);
       throw error;
@@ -115,10 +137,36 @@ function ResolvedEnquiry() {
   useEffect(() => {
     getCountFromServer(
       query(collection(db, "enquiry"), where("status", "==", "resolved"))
-    ).then((snapshot) => {
+    ).then((snapshot: any) => {
       setCount(snapshot.data().count);
     });
   }, []);
+
+  const [enquiry, setEnquiry] = useState<Enquiry | undefined>();
+
+  // const fetchEnquiry = async (id: string) => {
+  //   try {
+  //     const docRef = doc(db, "enquiry", id);
+  //     const docSnap = await getDoc(docRef);
+  //     if (docSnap.exists()) {
+  //       const data = docSnap.data();
+  //       const enquiryData: Enquiry = {
+  //         id: docSnap.id,
+  //         createdAt: data.createdAt.toDate(),
+  //         email: data.email,
+  //         message: data.message,
+  //         name: data.name,
+  //         phoneNumber: data.phoneNumber,
+  //         role: data.role,
+  //         status: data.status,
+  //       };
+
+  //       setEnquiry(enquiryData);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching enquiry:", error);
+  //   }
+  // };
 
   const { data, status, refetch } = useQuery({
     queryKey: [
@@ -130,6 +178,7 @@ function ResolvedEnquiry() {
       updatePaginationMap,
       selectedDateOption,
       selectedNameOption,
+      id,
     ],
     queryFn: () => fetchData(),
   });
@@ -138,27 +187,21 @@ function ResolvedEnquiry() {
   return (
     <div className="relative">
       <Drawer>
-        <DrawerTrigger className="absolute right-0 top-1 hidden md:block">
-          <Image
-            onClick={() => {
-              setSortActive(true);
-            }}
-            src={Sort}
-            alt=""
-            height={40}
-            width={40}
-          />
-        </DrawerTrigger>
-        <div className="flex flex-row justify-between items-center mt-6">
-          {data && (
-            <DataTable
-              refetch={refetch}
-              type="resolved"
-              columns={columns}
-              data={data}
-            />
-          )}
-          <DrawerTrigger className="md:hidden w-full flex justify-end">
+        <div className="flex flex-row w-full">
+          <div className="flex flex-row items-center gap-3 md:relative justify-start w-full mt-8 md:mt-14 md:mb-12">
+            <div className="md:w-[40%] w-[80%] absolute z-20">
+              <Input
+                label="Enquiry ID"
+                placeholder="Search by Enquiry ID..."
+                onChange={(event: any) => setId(event.target.value)}
+                className=""
+              />
+            </div>
+            <div className="cursor-pointer absolute z-30 left-[240px] md:left-[450px]">
+              <Icons.search width={20} height={20} />
+            </div>
+          </div>
+          <DrawerTrigger className="md:hidden w-full flex justify-end mt-8">
             <Image
               onClick={() => {
                 setSortActive(true);
@@ -169,6 +212,22 @@ function ResolvedEnquiry() {
               width={40}
             />
           </DrawerTrigger>
+        </div>
+        <div className="flex flex-row justify-between items-center mt-6">
+          {data && (
+            <DataTable
+              setSelectedDateOption={setSelectedDateOption}
+              selectedDateOption={selectedDateOption}
+              setSelectedNameOption={setSelectedNameOption}
+              selectedNameOption={selectedNameOption}
+              isActive={isSortActive}
+              setIsActive={setSortActive}
+              refetch={refetch}
+              type="resolved"
+              columns={columns}
+              data={data}
+            />
+          )}
         </div>
         <div className="md:hidden">
           {data && (
@@ -186,7 +245,6 @@ function ResolvedEnquiry() {
           />
         </DrawerContent>
       </Drawer>
-
       {data && (
         <div className=" ">
           <Pagination
@@ -203,4 +261,4 @@ function ResolvedEnquiry() {
   );
 }
 
-export default ResolvedEnquiry;
+export default ActiveEnquiry;
