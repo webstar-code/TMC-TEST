@@ -75,15 +75,15 @@ export function DataTable<Enquiry, TValue>({
 
   return (
     <div className="rounded-md w-[100%] md:block hidden">
-      <div className=" py-2 w-[40%]">
-        <Input
+      <div className="py-2 w-[40%]">
+        {/* <Input
           placeholder="Search by Enquiry ID..."
           value={(table.getColumn("id")?.getFilterValue() as string) ?? ""}
           onChange={(event: any) =>
             table.getColumn("id")?.setFilterValue(event.target.value)
           }
           className="w-[100%] text-black"
-        />
+        /> */}
       </div>
       <Table className="border border-none">
         <TableHeader>
