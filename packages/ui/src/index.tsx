@@ -14,9 +14,12 @@ export * from "./components/ui/dialog";
 export * from "./components/ui/label";
 export * from "./components/ui/checkbox";
 export * from "./components/custom/Input";
-export * from "./components/custom/Tabs";
+export * from "./components/ui/pagination";
+export * from "./components/ui/table";
+export * from "./components/ui/sonner";
+export * from "./components/ui/dropdown-menu";
+export * from "./components/ui/drawer";
 export * from "./components/ui/breadcrumb";
-export * from "./components/ui/skeleton";
 
 // lib
 export * from "./lib/utils";

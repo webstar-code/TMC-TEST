@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Ellipse, Ellipse1 } from "public/assets/images";
-import React from "react";
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -14,15 +14,10 @@ import {
   FormMessage,
   Input,
 } from "ui";
-import { auth, db } from "utils/firebase";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { auth } from "utils/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAdminStore } from "utils/store";
 import { redirect } from "next/navigation";
-import { doc, setDoc } from "firebase/firestore";
-import { v4 as uuidv4 } from "uuid";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -42,27 +37,24 @@ function Page() {
     },
   });
   const { admin } = useAdminStore();
-
-  console.log("[ADMIN]", admin);
+  const [loading, setLoading] = useState<boolean>(false);
 
   if (admin) {
     redirect("/dashboard");
   }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
     signInWithEmailAndPassword(auth, values.email, values.password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log("[ADMIN]", admin);
+        setLoading(false);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
       });
-
-    console.log("we are in onSubmit");
-    console.log(values);
   }
 
   return (
@@ -123,6 +115,7 @@ function Page() {
             </form>
             <div className="py-8 mt-8 w-full sm:w-[60%] md:w-full">
               <Button
+                loading={loading}
                 className="w-full h-12"
                 type="button"
                 onClick={form.handleSubmit(onSubmit)}>

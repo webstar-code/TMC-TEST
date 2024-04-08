@@ -1,16 +1,7 @@
 "use client";
 import Image from "next/image";
-import {
-  Cross,
-  Dashboard,
-  Dashboard_green,
-  EarningsManagement,
-  EnquiryManagement,
-  Hospital,
-  Logout,
-} from "public/assets/icons";
+import { Cross, Logout } from "public/assets/icons";
 import { Logo } from "public/assets/images";
-import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -18,10 +9,9 @@ import {
   AccordionTrigger,
 } from "ui";
 import { Icons } from "./Icons";
-import { redirect, usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { authApi } from "api/authApi1";
-import Router from "next/router";
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
@@ -36,15 +26,14 @@ export function SideNavItem({
 }) {
   const currPathname = usePathname();
   const searchParams = useSearchParams();
-  console.log(currPathname);
 
   return (
     <div
       className={` ${
         currPathname === pathname
-          ? "bg-secondary flex flex-row md:py-2 px-2 rounded-md"
-          : "bg-primary flex flex-row py-4 md:py-2 px-2 rounded-md"
-      } 'flex flex-row py-2 md:py-2 px-2 rounded-md'`}>
+          ? "bg-secondary flex flex-row  rounded-md"
+          : "bg-primary flex flex-row rounded-md"
+      } 'flex flex-row py-2 my-6 md:my-0 md:py-3 px-2 rounded-md'`}>
       <div className="flex flex-row gap-3">
         {currPathname === pathname && (
           <IconComponent
@@ -75,7 +64,7 @@ function SideNav({
 }) {
   const currPathname = usePathname();
   const searchParams = useSearchParams();
-  console.log(currPathname);
+  const router = useRouter();
   const handleLogout = async () => {
     await authApi.logout();
   };
@@ -84,7 +73,7 @@ function SideNav({
     <div className="z-50">
       {sideNavActive && (
         <div
-          className={`side-nav fixed top-0 left-0 w-screen h-screen md:hidden transition-transform transform ${
+          className={`side-nav z-50 fixed top-0 left-0 w-screen h-full md:hidden transition-transform transform ${
             sideNavActive ? "translate-x-0" : "-translate-x-full"
           }`}>
           <div className="absolute top-0 left-0 w-[80%] h-full bg-primary opacity-100 text-white px-6 ">
@@ -166,20 +155,20 @@ function SideNav({
                     </AccordionTrigger>
                     <AccordionContent>
                       <div className="text-base flex flex-col">
-                        <Link href="general-enquiry-management">
+                        <Link href="/enquires/general">
                           <h1
                             className={`${
-                              currPathname === "/general-enquiry-management"
+                              currPathname === "/enquires/general"
                                 ? "bg-secondary text-[#004C4C]"
                                 : ""
                             } ml-8 rounded-sm px-2 py-1`}>
                             General
                           </h1>
                         </Link>
-                        <Link href="support-enquiry-management">
+                        <Link href="/enquires/support">
                           <h1
                             className={`${
-                              currPathname === "/support-enquiry-management"
+                              currPathname === "/enquires/support"
                                 ? "bg-secondary text-[#004C4C]"
                                 : ""
                             } ml-8 rounded-sm px-2 py-1`}>
@@ -288,20 +277,20 @@ function SideNav({
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="flex flex-col gap-2">
-                      <Link href="general-enquiry-management">
+                      <Link href="/enquires/general">
                         <h1
                           className={`${
-                            currPathname === "/general-enquiry-management"
+                            currPathname === "/enquires/general"
                               ? "bg-secondary text-[#004C4C]"
                               : ""
                           } ml-8 rounded-sm px-2 py-1 `}>
                           General
                         </h1>
                       </Link>
-                      <Link href="support-enquiry-management">
+                      <Link href="/enquires/support">
                         <h1
                           className={`${
-                            currPathname === "/support-enquiry-management"
+                            currPathname === "/enquires/support"
                               ? "bg-secondary text-[#004C4C]"
                               : ""
                           } ml-8 rounded-sm px-2 py-1 `}>
@@ -321,7 +310,7 @@ function SideNav({
               />
             </Link>
             <div className="mt-6">
-              <div onClick={handleLogout}>
+              <div className="cursor-pointer" onClick={handleLogout}>
                 <SideNavItem
                   IconComponent={Icons.logout}
                   pathname="/"

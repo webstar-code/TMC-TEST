@@ -24,12 +24,14 @@ function ResolvedEnquiryModal() {
           Enquiry has been successfully resolved!
         </div>
         <div className="text-md font-thin text-center hidden md:block">
-          You can now access the inquiry by navigating to the "Resolved
-          Inquiries" section if you'd like to view it.
+          {
+            "You can now access the inquiry by navigating to the Resolved Inquiries section if you'd like to view it."
+          }
         </div>
         <div className="text-md text-center md:hidden font-thin">
-          You can now access the inquiry by navigating to the "Resolved
-          Inquiries" section if you'd like to view it.
+          {
+            "You can now access the inquiry by navigating to the Resolved Inquiries section if you'd like to view it."
+          }
         </div>
         <div className="flex w-full md:w-[60%] mb-4 md:mb-10 justify-center items-center">
           <Button
