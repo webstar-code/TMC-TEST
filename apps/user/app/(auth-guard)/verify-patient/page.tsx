@@ -12,7 +12,7 @@ import {
 } from "ui";
 
 export default function VerifyPatient() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
 
   return (
     <div className="w-full min-h-screen bg-black flex items-center justify-center">
