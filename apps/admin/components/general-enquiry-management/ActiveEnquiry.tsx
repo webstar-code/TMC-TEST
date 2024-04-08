@@ -124,29 +124,29 @@ function ActiveEnquiry() {
   const [enquiry, setEnquiry] = useState<Enquiry | undefined>();
   const [id, setId] = useState<string>();
 
-  const fetchEnquiry = async (id: string) => {
-    try {
-      const docRef = doc(db, "enquiry", id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const enquiryData: Enquiry = {
-          id: docSnap.id,
-          createdAt: data.createdAt.toDate(),
-          email: data.email,
-          message: data.message,
-          name: data.name,
-          phoneNumber: data.phoneNumber,
-          role: data.role,
-          status: data.status,
-        };
+  // const fetchEnquiry = async (id: string) => {
+  //   try {
+  //     const docRef = doc(db, "enquiry", id);
+  //     const docSnap = await getDoc(docRef);
+  //     if (docSnap.exists()) {
+  //       const data = docSnap.data();
+  //       const enquiryData: Enquiry = {
+  //         id: docSnap.id,
+  //         createdAt: data.createdAt.toDate(),
+  //         email: data.email,
+  //         message: data.message,
+  //         name: data.name,
+  //         phoneNumber: data.phoneNumber,
+  //         role: data.role,
+  //         status: data.status,
+  //       };
 
-        setEnquiry(enquiryData);
-      }
-    } catch (error) {
-      console.error("Error fetching enquiry:", error);
-    }
-  };
+  //       setEnquiry(enquiryData);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching enquiry:", error);
+  //   }
+  // };
 
   const { data, status, refetch } = useQuery({
     queryKey: [
@@ -164,28 +164,16 @@ function ActiveEnquiry() {
 
   const [isSortActive, setSortActive] = useState<boolean>(false);
   return (
-    <div className="">
+    <div className="relative">
       <Drawer>
         <div className="hidden md:block w-full">
-          <div className="flex flex-row justify-between w-full mt-8">
-            <Input
+          <div className="flex flex-row justify-between w-full">
+            {/* <Input
               label="Enquiry ID"
               placeholder="Search by Enquiry ID..."
               onChange={(event: any) => setId(event.target.value)}
               className="w-[300%]"
-            />
-            <Image
-              onClick={() => {
-                {
-                  id && fetchEnquiry(id);
-                }
-              }}
-              src={Sort}
-              alt=""
-              height={40}
-              width={40}
-              className="cursor-pointer"
-            />
+            /> */}
           </div>
         </div>
         <div className="flex flex-row justify-between items-center mt-6">
