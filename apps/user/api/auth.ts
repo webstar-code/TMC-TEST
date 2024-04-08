@@ -7,6 +7,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { auth, callable, db, dbCollections, functions } from "lib/firebase";
@@ -96,6 +97,7 @@ const createUser = async (
     email,
     createdAt: new Date(),
     updatedAt: new Date(),
+    patientDetailsSubmitted: false,
     isSubscriptionActive: false,
     isSubscriptionPurchased: false,
     preferences: { langauge: "en" },
@@ -111,6 +113,23 @@ const logout = async () => {
     .catch((err) => ({ status: "failed", data: null, message: err }));
 };
 
+const acceptLegal = async (id: string) => {
+  return await updateDoc(doc(db, dbCollections.users, id), {
+    tncConsent: {
+      version: 0,
+      accepted: true,
+      consentDate: serverTimestamp(),
+    },
+    privacyPolicyConsent: {
+      version: 0,
+      accepted: true,
+      consentDate: serverTimestamp(),
+    },
+  })
+    .then(() => ({ status: "ok" as const, data: "", message: "" }))
+    .catch((err) => ({ status: "failed", data: null, message: err }));
+};
+
 export const authApi = {
   getUserByEmail,
   logout,
@@ -119,4 +138,5 @@ export const authApi = {
   createUser,
   getUserById,
   resetPassword,
+  acceptLegal,
 };

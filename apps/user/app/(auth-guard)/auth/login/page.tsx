@@ -53,9 +53,12 @@ export default function Login() {
   const router = useRouter();
 
   useEffect(() => {
+    setShowOtpInput(false);
     setShowPasswordInput(false);
     setShowSetPassword(false);
-  }, [form.watch("email")]);
+    form.resetField("otp");
+    form.resetField("password");
+  }, [form, form.watch("email")]);
 
   const checkUserExists = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);

@@ -1,8 +1,11 @@
 "use client";
 
+import { authApi } from "api/auth";
 import { Ellipse, Ellipse1 } from "assets/images";
 import { Icons } from "components/Icons";
+import { useUserStore } from "lib/store";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   Button,
   Checkbox,
@@ -14,6 +17,20 @@ import {
 } from "ui";
 
 export default function AcceptLegal() {
+  const router = useRouter();
+  const { getUser, user } = useUserStore();
+  const accept = async () => {
+    if (user) {
+      const res = await authApi.acceptLegal(user.id);
+      if (res.status === "ok") {
+        getUser(user.id);
+        router.replace("/");
+      } else {
+        console.error("something went wrong.");
+      }
+    }
+  };
+
   return (
     <div className="relative w-full min-h-screen bg-primary flex items-center justify-center">
       <div className="fixed top-0 right-0 z-10">
@@ -101,7 +118,9 @@ export default function AcceptLegal() {
               </Label>
             </div>
           </div>
-          <Button className="w-full">Accept</Button>
+          <Button onClick={() => accept()} className="w-full">
+            Accept
+          </Button>
         </div>
       </div>
     </div>

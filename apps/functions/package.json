@@ -10,11 +10,6 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
-  "engines": {
-    "npm": "please-use-yarn",
-    "yarn": ">= 1.17.3",
-    "node": ">= 12.5.0"
-  },
   "main": "lib/index.js",
   "dependencies": {
     "@sendgrid/mail": "^8.1.2",
