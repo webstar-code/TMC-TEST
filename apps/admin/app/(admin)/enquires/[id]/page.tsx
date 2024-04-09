@@ -26,15 +26,15 @@ export interface Enquiry {
 }
 import { Button } from "ui";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { enquiryApi } from "api/enquiryApi";
+import ResolvedEnquiryModal from "components/general-enquiry-management/ResolvedEnquiryModal";
 
 export default function Page({ params }: { params: { id: string } }) {
   const [enquiry, setEnquiry] = useState<Enquiry | undefined>();
+  const [activeModal, setActiveModal] = useState<boolean>(false);
   const router = useRouter();
 
   const handleButtonClick = async (id: string) => {
-    toast("Status changed to the resolved");
     enquiryApi.updateEnquiry(id);
   };
 
@@ -158,6 +158,7 @@ export default function Page({ params }: { params: { id: string } }) {
             <Button
               onClick={() => {
                 handleButtonClick(params.id);
+                setActiveModal(true);
               }}
               className="w-1/2 h-10">
               Mark Resolved
@@ -165,6 +166,7 @@ export default function Page({ params }: { params: { id: string } }) {
           )}
         </div>
       </div>
+      {activeModal && <ResolvedEnquiryModal />}
     </div>
   );
 }
