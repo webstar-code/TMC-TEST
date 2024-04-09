@@ -1,7 +1,9 @@
 import "ui/globals.css";
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
-import "./globals.css";
+import "../../styles/globals.css";
+import { dir } from "i18next";
+import { languages } from "../i18n/settings";
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 export const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
@@ -12,13 +14,19 @@ export const metadata: Metadata = {
     "Access Your Health Records Anywhere, Anytime with Track My Care!",
 };
 
+export async function generateStaticParams() {
+  return languages.map((lng) => ({ lng }));
+}
+
 export default function RootLayout({
   children,
+  params: { lng },
 }: Readonly<{
   children: React.ReactNode;
+  params: any;
 }>) {
   return (
-    <html lang="en">
+    <html lang={lng} dir={dir(lng)}>
       <body className={plusJakartaSans.className}>{children}</body>
     </html>
   );

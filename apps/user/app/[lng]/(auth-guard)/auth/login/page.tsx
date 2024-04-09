@@ -58,7 +58,8 @@ export default function Login() {
     setShowSetPassword(false);
     form.resetField("otp");
     form.resetField("password");
-  }, [form, form.watch("email")]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.watch("email")]);
 
   const checkUserExists = async (data: z.infer<typeof formSchema>) => {
     setLoading(true);

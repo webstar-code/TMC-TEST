@@ -2,8 +2,12 @@
 import Image from "next/image";
 import { Button } from "ui";
 import { Ellipse, Ellipse1, HeroImage } from "assets/images";
+import { useTranslation } from "app/i18n/client";
+import { namepsaces } from "app/i18n/settings";
 
 function HeroSection() {
+  const { t } = useTranslation(namepsaces.landingPage);
+
   return (
     <div className="w-full h-full pb-10 md:h-[1260px] md:mt-[64px] mt-[64px]">
       <div className="h-[calc(650px)] lg:min-h-[calc(100vh-72px)] bg-primary relative md:max-h-fit">
@@ -16,12 +20,10 @@ function HeroSection() {
         <div className="relative w-full pt-32 z-20">
           <div className="px-6 flex flex-col  gap-8 justify-center mx-auto md:w-[60%]">
             <p className="text-secondary text-3xl md:text-[48px] text-center font-bold leading-[1.2]">
-              Access Your Health Records Anywhere, Anytime with Track My Care!
+              {t("heroSectionTitle")}
             </p>
             <h1 className="text-center text-secondary font-thin md:text-xl">
-              A centralized platform to collect and store all your health
-              records and images in a secure, convenient, private space and
-              easily accessible at your fingertips.
+              {t("heroSectionDescription")}
             </h1>
             <div className="flex justify-center">
               <Button variant={"secondary"} className="w-full max-w-[420px]">
