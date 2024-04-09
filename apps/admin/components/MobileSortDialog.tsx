@@ -12,8 +12,8 @@ function MobileSortDialog({
 }: {
   isActive: boolean;
   setIsActive: Function;
-  selectedDateOption: string;
-  selectedNameOption: string;
+  selectedDateOption: string | null;
+  selectedNameOption: string | null;
   setSelectedDateOption: Function;
   setSelectedNameOption: Function;
 }) {
@@ -52,27 +52,29 @@ function MobileSortDialog({
               <div className="flex flex-row items-center gap-2">
                 <Checkbox
                   onClick={() => {
-                    setSelectedNameOption("default");
+                    setSelectedNameOption(null);
                   }}
-                  checked={selectedNameOption === "default"}
+                  checked={selectedNameOption === null}
                 />
                 <h1 className="text-sm font-thin">Default</h1>
               </div>
               <div className="flex flex-row items-center gap-2">
                 <Checkbox
                   onClick={() => {
-                    setSelectedNameOption("az");
+                    setSelectedNameOption("asc");
+                    setSelectedDateOption(null);
                   }}
-                  checked={selectedNameOption === "az"}
+                  checked={selectedNameOption === "asc"}
                 />
                 <h1 className="text-sm font-thin">A - Z</h1>
               </div>
               <div className="flex flex-row items-center gap-2">
                 <Checkbox
                   onClick={() => {
-                    setSelectedNameOption("za");
+                    setSelectedNameOption("desc");
+                    setSelectedDateOption(null);
                   }}
-                  checked={selectedNameOption === "za"}
+                  checked={selectedNameOption === "desc"}
                 />
                 <h1 className="text-sm font-thin">Z - A</h1>
               </div>
@@ -83,27 +85,29 @@ function MobileSortDialog({
               <div className="flex flex-row items-center gap-2">
                 <Checkbox
                   onClick={() => {
-                    setSelectedDateOption("default");
+                    setSelectedDateOption(null);
                   }}
-                  checked={selectedDateOption === "default"}
+                  checked={selectedDateOption === null}
                 />
                 <h1 className="w-full text-sm">Default</h1>
               </div>
               <div className="flex flex-row items-center gap-2">
                 <Checkbox
                   onClick={() => {
-                    setSelectedDateOption("no");
+                    setSelectedDateOption("desc");
+                    setSelectedNameOption(null);
                   }}
-                  checked={selectedDateOption === "no"}
+                  checked={selectedDateOption === "desc"}
                 />
                 <h1 className="w-full text-sm">Newest to Oldest</h1>
               </div>
               <div className="flex flex-row items-center gap-2">
                 <Checkbox
                   onClick={() => {
-                    setSelectedDateOption("on");
+                    setSelectedDateOption("asc");
+                    setSelectedNameOption(null);
                   }}
-                  checked={selectedDateOption === "on"}
+                  checked={selectedDateOption === "asc"}
                 />
                 <h1 className="w-full text-sm">Oldest to Newest</h1>
               </div>

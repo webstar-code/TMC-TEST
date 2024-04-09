@@ -490,4 +490,27 @@ export const Icons = {
       />
     </svg>
   ),
+  trailingIcon: (props: IconProps) => (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M4 10.6665L8 14.6665L12 10.6665"
+        stroke="#004C4C"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M4 5.3335L8 1.3335L12 5.3335"
+        stroke="#004C4C"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
 };

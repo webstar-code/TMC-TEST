@@ -38,8 +38,8 @@ interface DataTableProps<Enquiry, TValue> {
   refetch: () => void;
   isActive: boolean;
   setIsActive: Function;
-  selectedDateOption: string;
-  selectedNameOption: string;
+  selectedDateOption: string | null;
+  selectedNameOption: string | null;
   setSelectedDateOption: Function;
   setSelectedNameOption: Function;
 }
@@ -109,17 +109,30 @@ export function DataTable<Enquiry, TValue>({
                         {header.column.columnDef.header}
                       </span>
                       <div className="flex flex-col items-center gap-[2px] cursor-pointer z-50">
-                        <div
+                        {/* <div
                           onClick={() => {
                             setSelectedNameOption("az");
+                            setSelectedDateOption("default")
                           }}>
                           <Icons.upperSort />
                         </div>
                         <div
                           onClick={() => {
                             setSelectedNameOption("za");
+                            setSelectedDateOption("default")
                           }}>
                           <Icons.downSort />
+                        </div> */}
+                        <div
+                          onClick={() => {
+                            setSelectedDateOption(null);
+                            if (selectedNameOption === "asc") {
+                              setSelectedNameOption("desc");
+                            } else {
+                              setSelectedNameOption("asc");
+                            }
+                          }}>
+                          <Icons.trailingIcon />
                         </div>
                       </div>
                     </div>
@@ -129,17 +142,31 @@ export function DataTable<Enquiry, TValue>({
                         {header.column.columnDef.header}
                       </span>
                       <div className="flex flex-col items-center gap-[2px] cursor-pointer">
-                        <div
+                        {/* <div
                           onClick={() => {
                             setSelectedDateOption("no");
+                            setSelectedNameOption("default")
+
                           }}>
                           <Icons.upperSort />
                         </div>
                         <div
                           onClick={() => {
                             setSelectedDateOption("on");
+                            setSelectedNameOption("default")
                           }}>
                           <Icons.downSort />
+                        </div> */}
+                        <div
+                          onClick={() => {
+                            setSelectedNameOption(null);
+                            if (selectedDateOption === "asc") {
+                              setSelectedDateOption("desc");
+                            } else {
+                              setSelectedDateOption("asc");
+                            }
+                          }}>
+                          <Icons.trailingIcon />
                         </div>
                       </div>
                     </div>
