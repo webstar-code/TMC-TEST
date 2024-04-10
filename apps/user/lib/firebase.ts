@@ -38,4 +38,7 @@ export const callable = {
   sendOtp: "sendOtp",
   verifyOtp: "verifyOtp",
   resetPassword: "resetPassoword",
+  getSubscriptionPlans: "getSubscriptionPlans",
+  purchaseSubscription: "purchaseSubscription",
+  getActiveSubscription: "getActiveSubscription",
 };

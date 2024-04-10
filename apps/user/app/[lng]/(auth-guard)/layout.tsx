@@ -2,7 +2,7 @@
 
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "lib/firebase";
-import { useUserStore } from "lib/store";
+import { useActiveSusbcription, useUserStore } from "lib/store";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ROUTES } from "utils/routes";
@@ -15,15 +15,17 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   const { getUser, user } = useUserStore();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const { getActiveSubscription } = useActiveSusbcription();
 
   useEffect(() => {
-    return onAuthStateChanged(auth, (user) => {
+    return onAuthStateChanged(auth, async (user) => {
       if (user) {
-        getUser(user.uid);
+        await getUser(user.uid);
+        await getActiveSubscription(user.uid);
       }
       setLoading(false);
     });
-  }, [getUser]);
+  }, [getUser, getActiveSubscription]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -45,10 +47,10 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
     router.push(ROUTES.acceptLegal);
     return children;
   }
-  if (user && !user.patientDetailsSubmitted) {
-    router.push(ROUTES.verifyPatient);
-    return children;
-  }
+  // if (user && !user.patientDetailsSubmitted) {
+  //   router.push(ROUTES.verifyPatient);
+  //   return children;
+  // }
 
   return children;
 }

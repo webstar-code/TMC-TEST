@@ -1,4 +1,5 @@
-import { authApi } from "api/auth";
+import { IResponse, authApi } from "api/auth";
+import { subscriptionsApi } from "api/subscription";
 import { create } from "zustand";
 
 interface LegalConsent {
@@ -26,7 +27,7 @@ export interface IUser {
 
 interface UserStoreState {
   user: IUser | null;
-  getUser: (id: string) => void;
+  getUser: (id: string) => Promise<IResponse<IUser>>;
 }
 
 export const useUserStore = create<UserStoreState>((set) => ({
@@ -37,3 +38,32 @@ export const useUserStore = create<UserStoreState>((set) => ({
     return result;
   },
 }));
+
+// TODO: move to packages/types
+export interface ActiveSubscription {
+  id: string;
+  currentPeriodStart: number;
+  currentPeriodEnd: number;
+  planId: string;
+  status: string;
+  plan: {
+    name: string;
+    amount: number;
+    currency: string;
+    interval: string;
+  };
+}
+interface ActiveSubscriptionStoreState {
+  activeSubscription: ActiveSubscription | null;
+  getActiveSubscription: (id: string) => Promise<ActiveSubscription | null>;
+}
+export const useActiveSusbcription = create<ActiveSubscriptionStoreState>(
+  (set) => ({
+    activeSubscription: null,
+    getActiveSubscription: async (userId) => {
+      const result = await subscriptionsApi.getActiveSubscription(userId);
+      set({ activeSubscription: result });
+      return result;
+    },
+  })
+);

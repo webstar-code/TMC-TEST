@@ -15,7 +15,7 @@ import { IUser } from "lib/store";
 import { httpsCallable } from "firebase/functions";
 
 type IResponseStatus = "ok" | "failed";
-interface IResponse<T> {
+export interface IResponse<T> {
   status: IResponseStatus;
   data: T | null;
   message: string;
