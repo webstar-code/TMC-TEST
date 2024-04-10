@@ -39,13 +39,14 @@ export interface Enquiry {
 }
 
 function ActiveEnquiry() {
-  // const [prevEnquires, setPrevEnquires] = useState<Enquiry[]>()
   const [, setEnquires] = useState<Enquiry[]>();
   const [count, setCount] = useState<number>(0);
-  const [selectedNameOption, setSelectedNameOption] =
-    useState<string>("default");
-  const [selectedDateOption, setSelectedDateOption] =
-    useState<string>("default");
+  const [selectedNameOption, setSelectedNameOption] = useState<string | null>(
+    null
+  );
+  const [selectedDateOption, setSelectedDateOption] = useState<string | null>(
+    null
+  );
   const [id, setId] = useState<string>();
 
   const {
@@ -61,9 +62,9 @@ function ActiveEnquiry() {
 
   const fetchData = async () => {
     let sortingNameOrder: OrderByDirection =
-      selectedNameOption === "az" ? "asc" : "desc";
+      selectedNameOption === "asc" ? "asc" : "desc";
     let sortingDateOrder: OrderByDirection =
-      selectedDateOption === "on" ? "desc" : "asc";
+      selectedDateOption === "asc" ? "asc" : "desc";
 
     try {
       if (id) {
@@ -89,10 +90,25 @@ function ActiveEnquiry() {
         q = query(
           collection(db, "enquiry"),
           where("status", "==", "active"),
-          orderBy("name", sortingNameOrder),
-          orderBy("createdAt", sortingDateOrder),
+          orderBy("createdAt", "desc"),
           limit(resultsPerPage)
         );
+
+        if (selectedNameOption) {
+          q = query(
+            collection(db, "enquiry"),
+            where("status", "==", "active"),
+            orderBy("name", sortingNameOrder),
+            limit(resultsPerPage)
+          );
+        } else if (selectedDateOption) {
+          q = query(
+            collection(db, "enquiry"),
+            where("status", "==", "active"),
+            orderBy("createdAt", sortingDateOrder),
+            limit(resultsPerPage)
+          );
+        }
 
         if (page > 1) {
           if (startAfterId) {
@@ -100,11 +116,28 @@ function ActiveEnquiry() {
             q = query(
               collection(db, "enquiry"),
               where("status", "==", "active"),
-              orderBy("name", sortingNameOrder),
-              orderBy("createdAt", sortingDateOrder),
+              orderBy("createdAt", "desc"),
               startAfter(cursor),
               limit(resultsPerPage)
             );
+            if (selectedNameOption) {
+              q = query(
+                collection(db, "enquiry"),
+                where("status", "==", "active"),
+                orderBy("name", sortingNameOrder),
+                startAfter(cursor),
+                limit(resultsPerPage)
+              );
+            } else if (selectedDateOption) {
+              const cursor = await getDoc(doc(db, "enquiry", startAfterId));
+              q = query(
+                collection(db, "enquiry"),
+                where("status", "==", "active"),
+                orderBy("createdAt", sortingDateOrder),
+                startAfter(cursor),
+                limit(resultsPerPage)
+              );
+            }
           }
         }
 
@@ -141,32 +174,6 @@ function ActiveEnquiry() {
       setCount(snapshot.data().count);
     });
   }, []);
-
-  const [enquiry, setEnquiry] = useState<Enquiry | undefined>();
-
-  // const fetchEnquiry = async (id: string) => {
-  //   try {
-  //     const docRef = doc(db, "enquiry", id);
-  //     const docSnap = await getDoc(docRef);
-  //     if (docSnap.exists()) {
-  //       const data = docSnap.data();
-  //       const enquiryData: Enquiry = {
-  //         id: docSnap.id,
-  //         createdAt: data.createdAt.toDate(),
-  //         email: data.email,
-  //         message: data.message,
-  //         name: data.name,
-  //         phoneNumber: data.phoneNumber,
-  //         role: data.role,
-  //         status: data.status,
-  //       };
-
-  //       setEnquiry(enquiryData);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching enquiry:", error);
-  //   }
-  // };
 
   const { data, status, refetch } = useQuery({
     queryKey: [

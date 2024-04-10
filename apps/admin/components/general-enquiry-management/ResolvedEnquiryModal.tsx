@@ -1,10 +1,12 @@
 import { Modal } from "components/Model";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Black_cross, Green_tick } from "public/assets/icons";
 import React from "react";
 import { Button } from "ui";
 
 function ResolvedEnquiryModal() {
+  const router = useRouter();
   return (
     <Modal>
       <div className="flex flex-col items-center px-4 py-4 md:py-0 gap-4 md:gap-6">
@@ -36,7 +38,7 @@ function ResolvedEnquiryModal() {
         <div className="flex w-full md:w-[60%] mb-4 md:mb-10 justify-center items-center">
           <Button
             onClick={() => {
-              // handleClose(false)
+              router.push("/enquires/general");
             }}
             className="w-1/2 h-10">
             Go Back
