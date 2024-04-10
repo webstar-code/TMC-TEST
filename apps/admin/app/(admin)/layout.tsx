@@ -6,8 +6,8 @@ import { redirect } from "next/navigation";
 import { Toaster } from "ui";
 
 import { useEffect, useState } from "react";
-import { auth } from "utils/firebase";
-import { useAdminStore } from "utils/store";
+import { auth } from "lib/firebase";
+import { useAdminStore } from "lib/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export default function RootLayout({
@@ -24,7 +24,6 @@ export default function RootLayout({
   });
   const [sideNavActive, setSideNavActive] = useState<boolean>(false);
   const { admin } = useAdminStore();
-
   useEffect(() => {
     if (!admin) {
       redirect("/login");
@@ -47,7 +46,7 @@ export default function RootLayout({
             setSideNavActive={setSideNavActive}
           />
           <div className="w-full">{children}</div>
-          <Toaster />
+          <Toaster expand={true} richColors />
         </div>
       </main>
     </QueryClientProvider>

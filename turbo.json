@@ -8,7 +8,8 @@
         "SENDGRID_KEY",
         "NEXT_PUBLIC_LOCIZE_PROJECT_ID",
         "NEXT_PUBLIC_LOCIZE_API_KEY",
-        "NODE_ENV"
+        "NODE_ENV",
+        "STRIPE_TEST_KEY"
       ],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
       "dotEnv": [

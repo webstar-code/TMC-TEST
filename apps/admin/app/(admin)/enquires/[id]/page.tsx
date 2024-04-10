@@ -10,7 +10,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "ui";
-import { db } from "utils/firebase";
+import { db } from "lib/firebase";
 import { Icons } from "components/Icons";
 import { Input } from "ui";
 

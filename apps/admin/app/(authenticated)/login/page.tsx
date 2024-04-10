@@ -14,9 +14,9 @@ import {
   FormMessage,
   Input,
 } from "ui";
-import { auth } from "utils/firebase";
+import { auth } from "lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useAdminStore } from "utils/store";
+import { useAdminStore } from "lib/store";
 import { redirect } from "next/navigation";
 
 const formSchema = z.object({

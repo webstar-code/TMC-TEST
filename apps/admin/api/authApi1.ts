@@ -1,7 +1,7 @@
 import { signOut } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { redirect } from "next/navigation";
-import { auth, db } from "utils/firebase";
+import { auth, db } from "lib/firebase";
 import { v4 as uuidv4 } from "uuid";
 
 const getAdminById = async (id: string) => {

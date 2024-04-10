@@ -263,17 +263,19 @@ export const Icons = {
       />
     </svg>
   ),
-  blackCross: (props: IconProps) => (
+  close: (props: IconProps) => (
     <svg
-      width={props.width}
-      height={props.height}
-      viewBox="0 0 14 14"
-      fill={"none" || props.fill}
-      xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M1.39641 14L0 12.5962L5.60356 7.00524L0 1.41741L1.39641 0L7.01051 5.58783L12.6036 0L14 1.41741L8.4206 7.00524L14 12.5962L12.6036 14L7.01051 8.41217L1.39641 14Z"
-        fill="black"
-      />
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="lucide lucide-x">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
     </svg>
   ),
   logout: (props: IconProps) => (

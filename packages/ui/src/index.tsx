@@ -20,6 +20,9 @@ export * from "./components/ui/sonner";
 export * from "./components/ui/dropdown-menu";
 export * from "./components/ui/drawer";
 export * from "./components/ui/breadcrumb";
+export * from "./components/ui/sonner";
+export * from "./components/ui/skeleton";
+export * from "./components/ui/alert-dialog";
 
 // lib
 export * from "./lib/utils";

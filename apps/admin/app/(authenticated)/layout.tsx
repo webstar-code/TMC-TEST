@@ -1,8 +1,8 @@
 "use client";
 import { onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
-import { auth } from "utils/firebase";
-import { useAdminStore } from "utils/store";
+import { auth } from "lib/firebase";
+import { useAdminStore } from "lib/store";
 
 export default function RootLayout({
   children,

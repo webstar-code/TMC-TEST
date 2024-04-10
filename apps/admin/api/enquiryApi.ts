@@ -1,5 +1,5 @@
 import { doc, updateDoc } from "firebase/firestore";
-import { db } from "utils/firebase";
+import { db } from "lib/firebase";
 
 const updateEnquiry = async (id: string) => {
   const documentId = id; // Replace this with the actual document ID

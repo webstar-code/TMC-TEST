@@ -18,7 +18,7 @@ import {
 import Image from "next/image";
 import { Sort } from "public/assets/icons";
 import React, { useEffect, useState } from "react";
-import { db } from "utils/firebase";
+import { db } from "lib/firebase";
 import { useQuery } from "@tanstack/react-query";
 import { Pagination } from "components/Pagination";
 import { usePagination } from "hooks/usePagination";
