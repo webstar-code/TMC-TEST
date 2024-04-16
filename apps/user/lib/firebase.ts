@@ -32,6 +32,8 @@ export const functions = getFunctions(app);
 
 export const dbCollections = {
   users: "users",
+  subscriptionPlans: "subscription-plans",
+  subscriptions: "subscriptions",
 };
 
 export const callable = {
@@ -39,6 +41,10 @@ export const callable = {
   verifyOtp: "verifyOtp",
   resetPassword: "resetPassoword",
   getSubscriptionPlans: "getSubscriptionPlans",
-  purchaseSubscription: "purchaseSubscription",
   getActiveSubscription: "getActiveSubscription",
+  createSubscription: "createSubscription",
+  updateSubscription: "updateSubscription",
+  cancelSubscription: "cancelSubscription",
+  attachPaymentMethod: "attachPaymentMethod",
+  getPaymentMethod: "getPaymentMethod",
 };

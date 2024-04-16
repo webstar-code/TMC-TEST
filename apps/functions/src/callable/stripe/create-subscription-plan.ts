@@ -1,8 +1,8 @@
 import admin from "firebase-admin";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import joi from "joi";
-import { stripe } from "../utils/stripe";
-import { dbCollections, generateId } from "../utils/db";
+import { dbCollections } from "../../utils/db";
+import { stripe } from "../../utils/stripe";
 
 type CreateProduct = {
   name: string;
@@ -34,19 +34,22 @@ exports.createSubscriptionPlan = onCall(async (request) => {
   }
   try {
     const product = await createProduct(body);
-    const subId = generateId("sub");
     const newSubscriptionPlan = {
-      id: subId,
-      stripeProductId: product.id,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+      id: product.id,
+      name: product.name,
+      active: product.active,
+      items: [],
+      features: product.features,
+      pricing: null,
+      createdAt: new Date(product.created * 1000),
+      updatedAt: new Date(product.updated * 1000),
     };
     admin
       .firestore()
       .collection(dbCollections.subscriptionPlans)
-      .doc(subId)
+      .doc(product.id)
       .set(newSubscriptionPlan);
-    return newSubscriptionPlan;
+    return { status: "ok", data: newSubscriptionPlan };
   } catch (err) {
     throw new HttpsError("internal", "something went wrong.");
   }

@@ -16,6 +16,7 @@ export interface IUser {
     langauge: "en";
   };
   patientId?: string;
+  customerId?: string;
   tncConsent?: LegalConsent;
   privacyPolicyConsent?: LegalConsent;
   patientDetailsSubmitted: boolean;
@@ -42,16 +43,21 @@ export const useUserStore = create<UserStoreState>((set) => ({
 // TODO: move to packages/types
 export interface ActiveSubscription {
   id: string;
-  currentPeriodStart: number;
-  currentPeriodEnd: number;
-  planId: string;
+  currentPeriodStart: string;
+  currentPeriodEnd: string;
   status: string;
+  customerId: string;
+  startDate: string;
+  cancelAt: string | null;
+  canceledAt: string | null;
+  cancelAtPeriodEnd: string | null;
   plan: {
     name: string;
     amount: number;
     currency: string;
     interval: string;
   };
+  createdAt: string;
 }
 interface ActiveSubscriptionStoreState {
   activeSubscription: ActiveSubscription | null;
@@ -62,8 +68,8 @@ export const useActiveSusbcription = create<ActiveSubscriptionStoreState>(
     activeSubscription: null,
     getActiveSubscription: async (userId) => {
       const result = await subscriptionsApi.getActiveSubscription(userId);
-      set({ activeSubscription: result });
-      return result;
+      set({ activeSubscription: result.data });
+      return result.data;
     },
   })
 );

@@ -1,9 +1,8 @@
 import admin from "firebase-admin";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import joi from "joi";
-import { DEFAULT_CURRENCY, stripe } from "../utils/stripe";
-import { dbCollections } from "../utils/db";
-import { FieldValue } from "firebase-admin/firestore";
+import { dbCollections } from "../../utils/db";
+import { DEFAULT_CURRENCY, stripe } from "../../utils/stripe";
 
 export async function createRecurringPrice(
   productId: string,
@@ -38,28 +37,21 @@ exports.createPricing = onCall(async (request) => {
   if (validate.error) {
     throw new HttpsError("invalid-argument", validate.error.message);
   }
-  const result = (
-    await admin
-      .firestore()
-      .collection(dbCollections.subscriptionPlans)
-      .doc(body.subscriptionId)
-      .get()
-  ).data();
-  if (!result) return;
-  const productId = result.stripeProductId;
-  await createRecurringPrice(productId, {
+  const productId = body.subscriptionPlanId;
+  const newPrice = await createRecurringPrice(productId, {
     price: body.price,
     interval: body.interval,
   });
+
   await admin
     .firestore()
     .collection(dbCollections.subscriptionPlans)
-    .doc(body.subscriptionId)
+    .doc(productId)
     .update({
-      updatedAt: FieldValue.serverTimestamp(),
+      [`pricing.${body.interval}`]: newPrice.unit_amount,
     });
   return {
     status: "ok",
-    message: `${result.type}_${body.interval} recurring pricing created`,
+    message: `${body.interval} recurring pricing created`,
   };
 });

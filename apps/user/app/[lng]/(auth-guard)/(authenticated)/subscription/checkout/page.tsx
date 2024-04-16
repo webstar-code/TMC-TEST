@@ -7,10 +7,16 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import {
+  IRecurringInterval,
+  ISubscriptionPlan,
+  subscriptionsApi,
+} from "api/subscription";
 import { useUserStore } from "lib/store";
-import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import {
   Alert,
   Button,
@@ -22,13 +28,7 @@ import {
   DrawerTrigger,
   Skeleton,
 } from "ui";
-import { toast } from "sonner";
-import { DEFAULT_CURRENCY } from "utils";
-import {
-  IRecurringInterval,
-  ISubscriptionPlan,
-  subscriptionsApi,
-} from "api/subscription";
+import { DEFAULT_CURRENCY, convertFromCents } from "utils";
 import { ROUTES } from "utils/routes";
 
 const stripePromise = loadStripe(
@@ -37,10 +37,8 @@ const stripePromise = loadStripe(
 
 export default function Checkout() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [plan, setPlan] = useState<ISubscriptionPlan>();
   const [price, setPrice] = useState(0);
-  const [vat, setVat] = useState(0);
   const [showPaymentGate, setShowPaymentGate] = useState(false);
 
   useEffect(() => {
@@ -79,13 +77,13 @@ export default function Checkout() {
                   TMC {searchParams.get("recurring")} Plan
                 </h3>
                 <h3 className="text-sm font-medium">
-                  {DEFAULT_CURRENCY.symbol} {price}
+                  {DEFAULT_CURRENCY.symbol} {convertFromCents(price)}
                 </h3>
               </div>
               <div className="w-full flex items-start justify-between py-2 border-b border-accent">
                 <h3 className="text-primary font-semibold">Total</h3>
                 <h3 className="font-semibold">
-                  {DEFAULT_CURRENCY.symbol} {price}
+                  {DEFAULT_CURRENCY.symbol} {convertFromCents(price)}
                 </h3>
               </div>
               <div className="w-full hidden md:block">
@@ -100,7 +98,7 @@ export default function Checkout() {
                         options={{
                           mode: "payment",
                           currency: DEFAULT_CURRENCY.code,
-                          amount: 1000,
+                          amount: price,
                           paymentMethodCreation: "manual",
                           appearance: {
                             theme: "flat",
@@ -132,7 +130,7 @@ export default function Checkout() {
                         options={{
                           mode: "payment",
                           currency: DEFAULT_CURRENCY.code,
-                          amount: 1000,
+                          amount: price,
                           paymentMethodCreation: "manual",
                           appearance: {
                             theme: "flat",
@@ -208,20 +206,29 @@ function PaymentGateway({
       handleError(error);
       return;
     }
-    // Now that you have a PaymentMethod, you can use it in the following steps to render a confirmation page or run additional validations on the server
+    const x: any = {
+      name: "flexxited",
+      email: "01flexxitedtest@gmail.com",
+      phoneNumber: "+911234567899",
+      paymentMethodId: paymentMethod.id,
+      userId: user.id,
+    };
+    if (user.customerId) {
+      x["customerId"] = user.customerId;
+    }
+    await subscriptionsApi.attachPaymentMethod({
+      ...x,
+    });
     subscriptionsApi
       .purchaseSubscription({
-        paymentMethodId: paymentMethod.id,
         subscriptionPlanId: subscriptionId,
-        recurring,
+        interval: recurring,
         userId: user.id,
-        name: "", // TODO: add user name
-        email: user.email,
-        phone: "", // TODO: add user phone number
       })
       .then((res) => {
         if (res.status === "ok") {
           router.replace(ROUTES.subscription);
+          window.location.reload();
         } else {
           if (res.status === "failed") {
             toast.error(res.message.description, {

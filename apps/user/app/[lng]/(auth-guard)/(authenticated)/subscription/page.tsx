@@ -1,15 +1,37 @@
 "use client";
 
-import { ISubscriptionPlan, subscriptionsApi } from "api/subscription";
+import {
+  Elements,
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { apiMiddleware } from "api/middlware";
+import {
+  IRecurringInterval,
+  ISubscriptionPlan,
+  subscriptionsApi,
+} from "api/subscription";
 import { Icons } from "components/Icons";
 import { format } from "date-fns";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "lib/firebase";
-import { useActiveSusbcription } from "lib/store";
-import { MoreHorizontal } from "lucide-react";
+import {
+  ActiveSubscription,
+  useActiveSusbcription,
+  useUserStore,
+} from "lib/store";
+import { Loader2, MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { DialogClose } from "ui";
+import { Alert } from "ui";
 import {
+  AlertDialog,
+  AlertDialogContent,
+  Badge,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -18,6 +40,12 @@ import {
   BreadcrumbSeparator,
   Button,
   Checkbox,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -34,23 +62,21 @@ import {
   TabsList,
   TabsTrigger,
 } from "ui";
-import { DEFAULT_CURRENCY } from "utils";
+import { DEFAULT_CURRENCY, convertFromCents } from "utils";
 
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_TEST_KEY!
+);
 // TODO: move to packages/types
 interface ISubscriptionInvoice {
   id: string;
   subscriptionId: string;
-  stripeInvoiceId: string;
   amountPaid: number;
   currency: string;
   customerEmail: string;
   customerName: string;
   customerPhoneNumber: string;
   customerAddress: string;
-  description: string;
-  dueDate: number;
-  effectiveDate: number;
-  paid: number;
   number: string;
   periodStart: number;
   periodEnd: number;
@@ -59,13 +85,8 @@ interface ISubscriptionInvoice {
   subTotal: number;
   tax: number;
   total: number;
-  items: {
-    amount: number;
-    description: string;
-    currency: string;
-  }[];
   invoicePdf: string;
-  created: number;
+  createdAt: number;
 }
 
 export default function SubscriptionPage() {
@@ -74,14 +95,22 @@ export default function SubscriptionPage() {
   const [showPlans, setShowPlans] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [paymentMethod, setPaymentMethod] = useState<any>(null);
+  const { user } = useUserStore();
+  const [processingCancelation, setProcessingCancelation] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     getDocs(collection(db, "invoices")).then((querySnapshot) => {
       const data = querySnapshot.docs.map((d) => d.data());
-      setInvoices(data as ISubscriptionInvoice[]);
+      setInvoices(apiMiddleware.fromJson(data) as ISubscriptionInvoice[]);
       setLoading(false);
     });
+    if (user?.customerId) {
+      subscriptionsApi
+        .getPaymentMethod({ customerId: user.customerId })
+        .then((res) => setPaymentMethod(res.data));
+    }
   }, []);
 
   if (showPlans) {
@@ -110,7 +139,7 @@ export default function SubscriptionPage() {
           <div className="flex items-center gap-4">
             <h1 className="text-2xl font-semibold">Subscription</h1>
           </div>
-          <ViewPricing />
+          <ViewPricing activeSubscription={activeSubscription} />
         </div>
       </div>
     );
@@ -125,7 +154,61 @@ export default function SubscriptionPage() {
           <div className="flex items-center gap-4">
             {activeSubscription ? (
               <>
-                <Button variant={"outline"}>Cancel Membership</Button>
+                {activeSubscription.cancelAtPeriodEnd && (
+                  <Dialog modal>
+                    <DialogTrigger>
+                      <Button variant={"outline"}>Cancel Membership</Button>
+                    </DialogTrigger>
+                    {processingCancelation ? (
+                      <DialogContent>
+                        <h1>Processing...</h1>
+                      </DialogContent>
+                    ) : (
+                      <DialogContent>
+                        <DialogHeader>
+                          <h1 className="text-lg font-semibold">
+                            Cancel Subscription
+                          </h1>
+                        </DialogHeader>
+                        <DialogDescription>
+                          <p>
+                            Are you sure you want to cancel the subscription.
+                            This subscription is set to cancel at the end of the
+                            current period.
+                          </p>
+                        </DialogDescription>
+                        <DialogFooter>
+                          <div className="w-full flex justify-end gap-4 ">
+                            <DialogClose asChild>
+                              <Button
+                                className={"min-w-[96px]"}
+                                variant={"outline"}>
+                                No
+                              </Button>
+                            </DialogClose>
+                            <DialogClose asChild>
+                              <Button
+                                className={"min-w-[96px]"}
+                                onClick={async () => {
+                                  setProcessingCancelation(true);
+                                  await subscriptionsApi.cancelSubscription({
+                                    subscriptionId: activeSubscription.id,
+                                  });
+                                  toast.success(
+                                    "Subscription Cancelled. Payment has been stopped and the subscription will be terminated at the end date"
+                                  );
+                                  setProcessingCancelation(false);
+                                }}
+                                variant={"destructive"}>
+                                Yes
+                              </Button>
+                            </DialogClose>
+                          </div>
+                        </DialogFooter>
+                      </DialogContent>
+                    )}
+                  </Dialog>
+                )}
                 <Button onClick={() => setShowPlans(true)}>
                   Update Membership
                 </Button>
@@ -145,33 +228,94 @@ export default function SubscriptionPage() {
           ) : (
             <>
               {activeSubscription ? (
-                <div className="w-full bg-secondary p-6 flex items-start justify-between rounded-lg border">
-                  <div className="flex flex-col gap-2">
-                    <h3 className="text-sm font-semibold">Membership plan</h3>
-                    <p>
-                      <span>
-                        {DEFAULT_CURRENCY.symbol}
-                        {activeSubscription.plan.amount}/
-                        {activeSubscription.plan.interval}
-                      </span>
-                    </p>
+                <div className="w-full flex flex-col gap-4">
+                  <div className="w-full flex gap-4">
+                    <h1 className="text-2xl font-bold">
+                      {activeSubscription.plan.name}
+                    </h1>
+                    <Badge>{activeSubscription.status}</Badge>
+                    {activeSubscription.cancelAtPeriodEnd &&
+                      activeSubscription.cancelAt && (
+                        <Badge variant="outline">
+                          Cancels{" "}
+                          {format(
+                            new Date(activeSubscription.cancelAt),
+                            "MMMM do, yyyy"
+                          )}
+                        </Badge>
+                      )}
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <h3 className="text-sm font-semibold">Start Date</h3>
-                    {format(
-                      new Date(activeSubscription.currentPeriodStart * 1000),
-                      "do, MMMM, yyyy"
-                    )}
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <h3 className="text-sm font-semibold">End Date</h3>
-                    {format(
-                      new Date(activeSubscription.currentPeriodEnd * 1000),
-                      "do, MMMM, yyyy"
-                    )}
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <h3 className="text-sm font-semibold">Payment Method</h3>
+                  <div className="w-full bg-secondary p-6 flex flex-col items-start gap-4 rounded-lg border">
+                    <div className="w-full flex items-start justify-between gap-4">
+                      <div className="flex flex-col gap-2">
+                        <h3 className="text-sm font-semibold">
+                          Membership plan
+                        </h3>
+                        <p>
+                          <span>
+                            {DEFAULT_CURRENCY.symbol}
+                            {convertFromCents(activeSubscription.plan.amount)}/
+                            {activeSubscription.plan.interval}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <h3 className="text-sm font-semibold">Start Date</h3>
+                        {format(
+                          new Date(activeSubscription.currentPeriodStart),
+                          "do, MMMM, yyyy"
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <h3 className="text-sm font-semibold">End Date</h3>
+                        {format(
+                          new Date(activeSubscription.currentPeriodEnd),
+                          "do, MMMM, yyyy"
+                        )}
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <h3 className="text-sm font-semibold">
+                          Payment Method
+                        </h3>
+                        {activeSubscription.cancelAtPeriodEnd ? (
+                          <p className="text-sm italic">Paymemt paused</p>
+                        ) : (
+                          <>
+                            {paymentMethod && paymentMethod.type === "card" && (
+                              <div className="flex">
+                                <p className="text-sm">
+                                  •••• {paymentMethod.card.last4}{" "}
+                                  {paymentMethod.card.brand}
+                                </p>
+                              </div>
+                            )}
+                            <Dialog>
+                              <DialogTrigger>
+                                <p className="text-xs text-primary underline cursor-pointer">
+                                  Change Payment method
+                                </p>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <Elements
+                                  stripe={stripePromise}
+                                  options={{
+                                    mode: "payment",
+                                    currency: DEFAULT_CURRENCY.code,
+                                    amount: 1000,
+                                    paymentMethodCreation: "manual",
+                                    appearance: {
+                                      theme: "flat",
+                                      labels: "floating",
+                                    },
+                                  }}>
+                                  <CollectPaymentMethod />
+                                </Elements>
+                              </DialogContent>
+                            </Dialog>
+                          </>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               ) : null}
@@ -205,15 +349,12 @@ export default function SubscriptionPage() {
                           <TableRow key={invoice.id} className="">
                             <TableCell>{index + 1}</TableCell>
                             <TableCell>
-                              {format(
-                                new Date(invoice.created * 1000),
-                                "dd/M/yyyy"
-                              )}
+                              {format(new Date(invoice.createdAt), "dd/M/yyyy")}
                             </TableCell>
                             <TableCell>{invoice.number}</TableCell>
                             <TableCell>
                               {DEFAULT_CURRENCY.symbol}
-                              {invoice.total}
+                              {convertFromCents(invoice.total)}
                             </TableCell>
                             <TableCell>{invoice.status}</TableCell>
                             <TableCell>
@@ -248,14 +389,26 @@ export default function SubscriptionPage() {
           )}
         </div>
       </div>
+      <AlertDialog open={processingCancelation}>
+        <AlertDialogContent>
+          <div className="flex flex-col justify-center items-center px-4 py-4 md:py-0">
+            <p className="font-semibold">processing cancelation</p>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
 
-function ViewPricing() {
+function ViewPricing({
+  activeSubscription,
+}: {
+  activeSubscription?: ActiveSubscription | null;
+}) {
   const [subscriptionPlan, setSubscriptionPlan] = useState<ISubscriptionPlan>();
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -267,6 +420,24 @@ function ViewPricing() {
       })
       .catch(() => setLoading(false));
   }, []);
+
+  async function updateSubscription(interval: IRecurringInterval) {
+    if (activeSubscription) {
+      setProcessing(true);
+      const res = await subscriptionsApi.updateSubscription({
+        recurring: interval,
+        subscriptionId: activeSubscription.id,
+      });
+      if (res.status === "ok") {
+        setProcessing(false);
+        toast.success("Subscription updated");
+        window.location.reload();
+      } else {
+        toast.error("something went wrong");
+        setProcessing(false);
+      }
+    }
+  }
 
   if (loading || !subscriptionPlan) {
     return (
@@ -288,12 +459,12 @@ function ViewPricing() {
           <TabsTrigger
             className="w-1/2 h-full rounded-full font-semibold"
             value="monthly">
-            Monthly ${subscriptionPlan?.pricing.month}
+            Monthly ${convertFromCents(subscriptionPlan?.pricing.month)}
           </TabsTrigger>
           <TabsTrigger
             className="w-1/2 h-full rounded-full font-semibold"
             value="annually">
-            Annually ${subscriptionPlan?.pricing.year}
+            Annually ${convertFromCents(subscriptionPlan?.pricing.year)}
           </TabsTrigger>
         </TabsList>
         <TabsContent value="monthly">
@@ -323,10 +494,13 @@ function ViewPricing() {
               </h1>
             </div>
             <Button
+              disabled={activeSubscription?.plan.interval === "month"}
               onClick={() =>
-                router.push(
-                  `subscription/checkout?subscriptionPlan=${subscriptionPlan.id}&recurring=month`
-                )
+                activeSubscription
+                  ? updateSubscription("month")
+                  : router.push(
+                      `subscription/checkout?subscriptionPlan=${subscriptionPlan.id}&recurring=month`
+                    )
               }
               className="w-full mt-4">
               Buy Now
@@ -360,10 +534,13 @@ function ViewPricing() {
               </h1>
             </div>
             <Button
+              disabled={activeSubscription?.plan.interval === "year"}
               onClick={() =>
-                router.push(
-                  `subscription/checkout?subscriptionPlan=${subscriptionPlan.id}&recurring=year`
-                )
+                activeSubscription
+                  ? updateSubscription("year")
+                  : router.push(
+                      `subscription/checkout?subscriptionPlan=${subscriptionPlan.id}&recurring=year`
+                    )
               }
               className="w-full mt-4">
               Buy Now
@@ -371,6 +548,95 @@ function ViewPricing() {
           </div>
         </TabsContent>
       </Tabs>
+
+      <AlertDialog open={processing}>
+        <AlertDialogContent>
+          <div className="flex flex-col justify-center items-center px-4 py-4 md:py-0">
+            <p className="font-semibold">Please wait...</p>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
+  );
+}
+
+function CollectPaymentMethod() {
+  const [errorMessage, setErrorMessage] = useState();
+  const [loading, setLoading] = useState(false);
+  const { user } = useUserStore();
+
+  const handleError = (error: any) => {
+    setLoading(false);
+    setErrorMessage(error.message);
+  };
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    if (!stripe || !elements) {
+      return;
+    }
+
+    setLoading(true);
+    const { error: submitError } = await elements.submit();
+    if (submitError) {
+      handleError(submitError);
+      return;
+    }
+    if (!user) {
+      return;
+    }
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      elements,
+      params: {
+        billing_details: {
+          name: "", // TODO: add user name
+          email: user?.email,
+          phone: "", // TODO: add user phone number
+        },
+      },
+    });
+    if (error) {
+      handleError(error);
+      return;
+    }
+    const x: any = {
+      name: "flexxited",
+      email: "01flexxitedtest@gmail.com",
+      phoneNumber: "+911234567899",
+      paymentMethodId: paymentMethod.id,
+      userId: user.id,
+    };
+    if (user.customerId) {
+      x["customerId"] = user.customerId;
+    }
+    await subscriptionsApi
+      .attachPaymentMethod({
+        ...x,
+      })
+      .then((res) => {
+        if (res.status === "ok") {
+          window.location.reload();
+        } else {
+          if (res.status === "failed") {
+            toast.error(res.message.description, {
+              position: "top-center",
+            });
+          }
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+  const stripe = useStripe();
+  const elements = useElements();
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <PaymentElement options={{}} />
+      <Button className="w-full" disabled={!stripe || loading}>
+        {loading ? <Loader2 /> : "Change"}
+      </Button>
+      {errorMessage && <Alert>{errorMessage}</Alert>}
+    </form>
   );
 }

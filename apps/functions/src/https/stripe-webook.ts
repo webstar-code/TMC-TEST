@@ -2,8 +2,7 @@ import admin from "firebase-admin";
 import { onRequest } from "firebase-functions/v2/https";
 import { stripe } from "../utils/stripe";
 
-const STRIPE_WEBHOOK_SECRET =
-  "whsec_3a55633c2f9b0ffae53055e11d1d4e5bf382764b41c378dda4f5ddbc7079b6b3";
+const STRIPE_WEBHOOK_SECRET = "whsec_O5V05CsoRtn9uNEPVMsfHVzT4SGVz32K";
 
 exports.stripeWebhook = onRequest({ cors: true }, async (req, res) => {
   try {
@@ -18,7 +17,21 @@ exports.stripeWebhook = onRequest({ cors: true }, async (req, res) => {
 
     switch (event.type) {
       case "customer.subscription.deleted":
-        // Then define and call a function to handle the event customer.subscription.deleted
+        const customerSubscriptionDeleted = event.data.object;
+        const c = await stripe.customers.retrieve(
+          customerSubscriptionDeleted.customer as string
+        );
+        // @ts-ignore
+        const userId1 = c.metadata.firestore_id;
+        admin
+          .firestore()
+          .collection("users")
+          .doc(userId1)
+          .update({
+            susbcriptionStatus: customerSubscriptionDeleted.status,
+            isSubscriptionActive:
+              customerSubscriptionDeleted.status === "active" ? true : false,
+          });
         break;
       case "customer.subscription.paused":
         // Then define and call a function to handle the event customer.subscription.paused
@@ -32,38 +45,64 @@ exports.stripeWebhook = onRequest({ cors: true }, async (req, res) => {
           customerSubscriptionUpdated.customer as string
         );
         // @ts-ignore
-        const vendorId = customer.metadata.firestore_id;
+        const userId = customer.metadata.firestore_id;
         admin
           .firestore()
-          .collection("vendors")
-          .doc(vendorId)
+          .collection("users")
+          .doc(userId)
           .update({
             susbcriptionStatus: customerSubscriptionUpdated.status,
             isSubscriptionActive:
               customerSubscriptionUpdated.status === "active" ? true : false,
           });
         break;
-      case "invoice.paid":
-        const invoicePaid = event.data.object;
-        const querySnapshot = await admin
+      case "invoice.finalized":
+        const inv = event.data.object;
+        await admin
           .firestore()
           .collection("invoices")
-          .where("stripeInvoiceId", "==", invoicePaid.id)
-          .get();
-        if (querySnapshot.docs.length > 0) {
-          const invoice = querySnapshot.docs[0].data();
-          admin.firestore().collection("invoices").doc(invoice.id).update({
-            status: invoicePaid.status,
-            amountPaid: invoicePaid.amount_paid,
-            paid: invoicePaid.paid,
-            receiptNumber: invoicePaid.receipt_number,
+          .doc(inv.id)
+          .set({
+            id: inv.id,
+            currency: inv.currency,
+            amountPaid: inv.amount_paid,
+            customerEmail: inv.customer_email,
+            customerName: inv.customer_name,
+            customerPhoneNumber: inv.customer_phone,
+            items: inv.lines,
+            invoiceUrl: inv.invoice_pdf,
+            number: inv.number,
+            receiptNumber: inv.receipt_number,
+            total: inv.total,
+            subTotal: inv.subtotal,
+            tax: inv.tax,
+            subscriptionId: inv.subscription,
+            status: inv.status,
+            periodEnd: inv.period_end,
+            periodStart: inv.period_start,
+            createdAt: new Date(inv.created * 1000),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           });
-        }
-        // Then define and call a function to handle the event invoice.paid
+        break;
+      case "invoice.paid":
+        const invoicePaid = event.data.object;
+        await admin
+          .firestore()
+          .collection("invoices")
+          .doc(invoicePaid.id)
+          .update({
+            status: invoicePaid.status,
+          });
         break;
       case "invoice.payment_failed": {
-        // send email
-        // change db invoice status
+        const invoicePaymentFailed = event.data.object;
+        await admin
+          .firestore()
+          .collection("invoices")
+          .doc(invoicePaymentFailed.id)
+          .update({
+            status: invoicePaymentFailed.status,
+          });
         break;
       }
       default:

@@ -20,8 +20,10 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     return onAuthStateChanged(auth, async (user) => {
       if (user) {
-        await getUser(user.uid);
-        await getActiveSubscription(user.uid);
+        const result = await getUser(user.uid);
+        if (result.data?.customerId) {
+          await getActiveSubscription(result.data?.customerId);
+        }
       }
       setLoading(false);
     });

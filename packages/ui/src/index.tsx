@@ -23,6 +23,9 @@ export * from "./components/ui/breadcrumb";
 export * from "./components/ui/sonner";
 export * from "./components/ui/skeleton";
 export * from "./components/ui/alert-dialog";
+export * from "./components/ui/badge";
+export * from "./components/ui/alert";
+export * from "./components/custom/Tabs";
 
 // lib
 export * from "./lib/utils";

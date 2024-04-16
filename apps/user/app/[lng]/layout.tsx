@@ -6,7 +6,6 @@ import { dir } from "i18next";
 import { languages } from "../i18n/settings";
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
-export const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Track My Care",

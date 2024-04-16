@@ -1,7 +1,6 @@
 import { onCall, HttpsError } from "firebase-functions/v2/https";
 import joi from "joi";
 import { stripe } from "../utils/stripe";
-import admin from "firebase-admin";
 
 exports.getActiveSubscription = onCall(async (request) => {
   if (!request.auth) {
@@ -12,48 +11,64 @@ exports.getActiveSubscription = onCall(async (request) => {
   }
   const body = request.data;
   const schema = joi.object({
-    userId: joi.string().required(),
+    customerId: joi.string().required(),
   });
   const validate = schema.validate(body);
   if (validate.error) {
     throw new HttpsError("invalid-argument", validate.error.message);
   }
-
-  const userId = body.userId;
-  const q = admin
-    .firestore()
-    .collection("subscriptions")
-    .where("userId", "==", userId)
-    .orderBy("createdAt", "desc");
-  const querySnapshot = await q.get();
-  if (querySnapshot.docs.length === 0)
-    return { status: "ok", data: null, message: "no subscription found" };
-  const subscription = querySnapshot.docs[0].data();
-  const stripeSub = await stripe.subscriptions.retrieve(
-    subscription.stripeSubscriptionId
-  );
-  const subItem = stripeSub.items.data[0];
-  const stripeProduct = await stripe.products.retrieve(
-    subItem.plan.product as string
-  );
-
-  return {
-    status: "ok",
-    data: {
-      id: subscription.id,
-      currentPeriodStart: stripeSub.current_period_start,
-      currentPeriodEnd: stripeSub.current_period_end,
-      planId: subscription.planId,
-      status: stripeSub.status,
-      plan: {
-        name: stripeProduct.name,
-        amount: subItem.plan.amount
-          ? Number((subItem.plan.amount / 100).toFixed(2))
-          : 0,
-        currency: subItem.plan.currency,
-        interval: subItem.plan.interval,
+  try {
+    const customerId = body.customerId;
+    const subscriptions = await stripe.subscriptions.list({
+      customer: customerId,
+      status: "active",
+    });
+    if (subscriptions.data.length === 0) {
+      return { status: "ok", data: null, message: "No subscriptions found" };
+    }
+    let subscription = subscriptions.data[0];
+    const subItem = subscription.items.data[0];
+    const stripeProduct = await stripe.products.retrieve(
+      subItem.plan.product as string
+    );
+    return {
+      status: "ok",
+      data: {
+        id: subscription.id,
+        currentPeriodStart: new Date(
+          subscription.current_period_start * 1000
+        ).toISOString(),
+        currentPeriodEnd: new Date(
+          subscription.current_period_end * 1000
+        ).toISOString(),
+        status: subscription.status,
+        customerId: subscription.customer,
+        startDate: new Date(subscription.start_date * 1000).toISOString(),
+        endedAt: subscription.ended_at
+          ? new Date(subscription.ended_at * 1000).toISOString()
+          : null,
+        canceledAt: subscription.canceled_at
+          ? new Date(subscription.canceled_at * 1000).toISOString()
+          : null,
+        cancelAt: subscription.cancel_at
+          ? new Date(subscription.cancel_at * 1000).toISOString()
+          : null,
+        cancelAtPeriodEnd: subscription.cancel_at_period_end,
+        plan: {
+          name: stripeProduct.name,
+          amount: subItem.plan.amount,
+          currency: subItem.plan.currency,
+          interval: subItem.plan.interval,
+        },
+        createdAt: new Date(subscription.created * 1000).toISOString(),
       },
-    },
-    message: "success",
-  };
+      message: "success",
+    };
+  } catch (err) {
+    return {
+      status: "failed",
+      data: null,
+      message: err,
+    };
+  }
 });
