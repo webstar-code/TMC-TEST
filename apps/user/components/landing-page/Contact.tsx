@@ -1,27 +1,31 @@
 "use client";
-import Image from "next/image";
-import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "ui";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "ui";
-import { Input } from "ui";
+import { ContactUs } from "assets/images";
 import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+  Input,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Textarea,
 } from "ui";
-import { Textarea } from "ui";
-import { ContactUs } from "assets/images";
 // import { doc, setDoc } from 'firebase/firestore'
 // import { db } from 'utils/firebase'
-import { v4 as uuidv4 } from "uuid";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "lib/firebase";
+import { v4 as uuidv4 } from "uuid";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -112,6 +116,7 @@ function Contact() {
                 <FormItem>
                   <FormControl>
                     <Input
+                      label={"name"}
                       className="bg-primary text-white"
                       placeholder="Name"
                       {...field}
@@ -149,6 +154,7 @@ function Contact() {
                 <FormItem>
                   <FormControl>
                     <Input
+                      label="Email"
                       className="bg-primary text-white"
                       placeholder="Email"
                       {...field}
@@ -165,6 +171,7 @@ function Contact() {
                 <FormItem>
                   <FormControl>
                     <Input
+                      label="Phone Number"
                       className="bg-primary text-white"
                       placeholder="Phone Number"
                       {...field}
