@@ -208,7 +208,7 @@ function PaymentGateway({
     }
     const x: any = {
       name: "flexxited",
-      email: "01flexxitedtest@gmail.com",
+      email: user.email,
       phoneNumber: "+911234567899",
       paymentMethodId: paymentMethod.id,
       userId: user.id,
@@ -228,7 +228,6 @@ function PaymentGateway({
       .then((res) => {
         if (res.status === "ok") {
           router.replace(ROUTES.subscription);
-          window.location.reload();
         } else {
           if (res.status === "failed") {
             toast.error(res.message.description, {
