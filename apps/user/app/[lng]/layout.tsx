@@ -4,6 +4,7 @@ import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
 import "../../styles/globals.css";
 import { dir } from "i18next";
 import { languages } from "../i18n/settings";
+import { Toaster } from "ui";
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -26,7 +27,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang={lng} dir={dir(lng)}>
-      <body className={plusJakartaSans.className}>{children}</body>
+      <body className={plusJakartaSans.className}>
+        {children}
+        <Toaster expand={true} richColors />
+      </body>
     </html>
   );
 }
