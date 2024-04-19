@@ -412,4 +412,11 @@ export const Icons = {
       />
     </svg>
   ),
+  // logout: (props: IconProps) => (
+  //   <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+  //     <path d="M8.1582 7.42997C8.44237 4.12997 10.1382 2.78247 13.8507 2.78247H13.9699C18.0674 2.78247 19.7082 4.4233 19.7082 8.5208V14.4975C19.7082 18.595 18.0674 20.2358 13.9699 20.2358H13.8507C10.1657 20.2358 8.46987 18.9066 8.16737 15.6616" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  //     <path d="M13.75 11.5H3.31836" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  //     <path d="M5.36185 8.4292L2.29102 11.5L5.36185 14.5709" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  //   </svg>
+  // )
 };

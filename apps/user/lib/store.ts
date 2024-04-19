@@ -29,6 +29,7 @@ export interface IUser {
 interface UserStoreState {
   user: IUser | null;
   getUser: (id: string) => Promise<IResponse<IUser>>;
+  logout: () => Promise<null>;
 }
 
 export const useUserStore = create<UserStoreState>((set) => ({
@@ -37,6 +38,11 @@ export const useUserStore = create<UserStoreState>((set) => ({
     const result = await authApi.getUserById(id);
     set({ user: result.data });
     return result;
+  },
+  logout: async () => {
+    const result = await authApi.logout();
+    set({ user: null });
+    return null;
   },
 }));
 

@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "build": "turbo build",
+    "build-user": "turbo --filter ui --filter user build",
     "dev": "turbo dev",
     "user": "turbo run dev --filter ui --filter user",
     "admin": "turbo run dev --filter ui --filter admin",

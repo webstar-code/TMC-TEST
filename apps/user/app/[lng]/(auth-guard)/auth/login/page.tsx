@@ -10,6 +10,7 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "lib/firebase";
+import { useUserStore } from "lib/store";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -25,6 +26,7 @@ import {
   FormMessage,
   Input,
 } from "ui";
+import { ROUTES } from "utils/routes";
 import * as z from "zod";
 
 const formSchema = z.object({
@@ -49,6 +51,7 @@ export default function Login() {
   const [resetPasswordMailSent, setResetPasswordMailSent] = useState(false);
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
+  const { user } = useUserStore();
 
   const router = useRouter();
 
@@ -152,6 +155,10 @@ export default function Login() {
     );
   }
 
+  if (user) {
+    router.replace(ROUTES.exams);
+  }
+
   return (
     <div className="relative w-full min-h-screen bg-primary flex items-center justify-center">
       <div className="fixed top-0 right-0 z-10">
@@ -165,7 +172,7 @@ export default function Login() {
         <div className="relative w-full max-w-xl flex flex-col gap-6 px-6 py-20 items-center justify-center bg-background rounded-lg">
           <div
             className="absolute right-6 top-6 z-50 cursor-pointer"
-            onClick={() => router.back()}>
+            onClick={() => router.push("/")}>
             <Icons.close width={32} height={32} />
           </div>
           <h1 className="text-2xl font-bold">{meta.title}</h1>
