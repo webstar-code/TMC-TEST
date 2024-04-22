@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
+import { toast } from "sonner";
 import { ContactUs } from "assets/images";
 import {
   Button,
@@ -74,6 +74,8 @@ function Contact() {
 
       const docRef = doc(db, "enquiry", id);
       await setDoc(docRef, newEnquiry);
+      toast.success("Enquiry submitted.");
+      form.reset();
     } catch (error) {
       console.error("Error submitting enquiry:", error);
     } finally {
@@ -117,7 +119,8 @@ function Contact() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        label={"name"}
+                        label={"Name"}
+                        labelClassName="bg-primary text-white"
                         className="bg-primary text-white"
                         placeholder="Name"
                         {...field}
@@ -156,6 +159,7 @@ function Contact() {
                     <FormControl>
                       <Input
                         label="Email"
+                        labelClassName="bg-primary text-white"
                         className="bg-primary text-white"
                         placeholder="Email"
                         {...field}
@@ -173,6 +177,7 @@ function Contact() {
                     <FormControl>
                       <Input
                         label="Phone Number"
+                        labelClassName="bg-primary text-white"
                         className="bg-primary text-white"
                         placeholder="Phone Number"
                         {...field}
