@@ -24,7 +24,7 @@ function FAQs() {
                 securely centralizing your complete medical history, from lab
                 results to treatment plans, in a single accessible place. This
                 centralized approach not only enhances convenience by placing
-                vital health information at one's fingertips but also
+                vital health information at one&apos;s fingertips but also
                 facilitates seamless sharing with healthcare providers. You can
                 effortlessly share records for second opinions, specialist
                 consultations, or emergency situations. It ensures continuity of
@@ -42,13 +42,13 @@ function FAQs() {
             <AccordionTrigger>What is the subscription cost?</AccordionTrigger>
             <AccordionContent>
               <div className="font-thin flex flex-col gap-1 text-base">
-                Access to your records in our secure, easy to use, medical
-                cloud  platform can only be obtained through a subscription. We
-                offer a month to month subscription plan of $7/month or an
-                annual subscription plan of $45/year. Both plans provide all the
-                same features including record sharing, unlimited record
-                uploads, and radiology viewer. Whether you are actively
-                subscribed or not, all records will be permanently stored.
+                Access to your records in our secure, easy to use, medical cloud
+                platform can only be obtained through a subscription. We offer a
+                month to month subscription plan of $7/month or an annual
+                subscription plan of $45/year. Both plans provide all the same
+                features including record sharing, unlimited record uploads, and
+                radiology viewer. Whether you are actively subscribed or not,
+                all records will be permanently stored.
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -66,7 +66,7 @@ function FAQs() {
                 securely centralizing your complete medical history, from lab
                 results to treatment plans, in a single accessible place. This
                 centralized approach not only enhances convenience by placing
-                vital health information at one's fingertips but also
+                vital health information at one&apos;s fingertips but also
                 facilitates seamless sharing with healthcare providers. You can
                 effortlessly share records for second opinions, specialist
                 consultations, or emergency situations. It ensures continuity of
@@ -106,15 +106,15 @@ function FAQs() {
             <AccordionTrigger>Can I share my health records?</AccordionTrigger>
             <AccordionContent>
               <div className="font-thin flex flex-col gap-1 text-base">
-                With TrackMyCare's user-friendly medical cloud platform, sharing
-                your health records and diagnostic exams with specialists and
-                other healthcare providers is a breeze. By granting them access
-                to specific records for a specified time frame, you maintain
-                control. Providers receive a secure email link to access only
-                the selected records, ensuring both ease of sharing and
-                stringent data security. This streamlined process enhances
-                collaboration, leading to more informed and efficient healthcare
-                decisions.
+                With TrackMyCare&apos;s user-friendly medical cloud platform,
+                sharing your health records and diagnostic exams with
+                specialists and other healthcare providers is a breeze. By
+                granting them access to specific records for a specified time
+                frame, you maintain control. Providers receive a secure email
+                link to access only the selected records, ensuring both ease of
+                sharing and stringent data security. This streamlined process
+                enhances collaboration, leading to more informed and efficient
+                healthcare decisions.
               </div>
             </AccordionContent>
           </AccordionItem>

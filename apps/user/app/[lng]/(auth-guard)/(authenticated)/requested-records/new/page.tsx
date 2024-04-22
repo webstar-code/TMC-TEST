@@ -22,8 +22,10 @@ export default function NewRequestPage() {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
 
-  const startDrawing = (event) => {
+  const startDrawing = (event: any) => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+    // @ts-ignore
     const ctx = canvas.getContext("2d");
     const { offsetX, offsetY } = event.nativeEvent;
 
@@ -32,10 +34,12 @@ export default function NewRequestPage() {
     setIsDrawing(true);
   };
 
-  const draw = (event) => {
+  const draw = (event: any) => {
     if (!isDrawing) return;
 
     const canvas = canvasRef.current;
+    if (!canvas) return;
+    // @ts-ignore
     const ctx = canvas.getContext("2d");
     const { offsetX, offsetY } = event.nativeEvent;
 
@@ -47,10 +51,12 @@ export default function NewRequestPage() {
     setIsDrawing(false);
   };
 
-  const convertToDataURL = () => {
-    const canvas = canvasRef.current;
-    const dataURL = canvas.toDataURL();
-  };
+  // const convertToDataURL = () => {
+  //   const canvas = canvasRef.current;
+  //   if (!canvas) return;
+  //   // @ts-ignore
+  //   const dataURL = canvas.toDataURL();
+  // };
 
   return (
     <div className="flex flex-col">
