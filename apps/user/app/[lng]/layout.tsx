@@ -1,7 +1,7 @@
+import "../../styles/globals.css";
 import "ui/globals.css";
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
-import "../../styles/globals.css";
 import { dir } from "i18next";
 import { languages } from "../i18n/settings";
 import { Toaster } from "ui";
