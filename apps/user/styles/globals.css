@@ -1,6 +1,5 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
 *,
 body {
@@ -34,3 +33,4 @@ body {
     animation-range: entry 25% cover 50%;
   }
 }
+@tailwind utilities;
