@@ -25,7 +25,7 @@ export default function Home() {
         <StartNow />
         <AboutUs />
         <Contact />
-        {/* <Support /> */}
+        <Support />
         <FAQs />
         <Footer />
       </div>

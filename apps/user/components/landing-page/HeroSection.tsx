@@ -4,21 +4,32 @@ import { Button } from "ui";
 import { Ellipse, Ellipse1, HeroImage } from "assets/images";
 import { useTranslation } from "app/i18n/client";
 import { namepsaces } from "app/i18n/settings";
+import useMediaQuery from "hooks/useMediaQuery";
 
 function HeroSection() {
   const { t } = useTranslation(namepsaces.landingPage);
-
+  const { isSmall, isMedium, isLarge } = useMediaQuery();
   return (
-    <div className="w-full h-full pb-10 md:h-[1260px] md:mt-[64px] mt-[64px]">
-      <div className="h-[calc(650px)] lg:min-h-[calc(100vh-72px)] bg-primary relative md:max-h-fit">
+    <div className="w-full h-full pb-10 md:mt-[64px] mt-[64px]">
+      <div className="max-h-[700px] h-[calc(100vh)] bg-primary relative">
         <div className="absolute right-0 z-10">
-          <Image src={Ellipse} alt="logo" width={200} height={200} />
+          <Image
+            src={Ellipse}
+            alt="logo"
+            width={isSmall ? 200 : 384}
+            height={isSmall ? 200 : 384}
+          />
         </div>
         <div className="absolute bottom-0 z-10">
-          <Image src={Ellipse1} alt="logo" width={210} height={210} />
+          <Image
+            src={Ellipse1}
+            alt="logo"
+            width={isSmall ? 200 : 384}
+            height={isSmall ? 200 : 384}
+          />
         </div>
         <div className="relative w-full pt-32 z-20">
-          <div className="px-6 flex flex-col  gap-8 justify-center mx-auto md:w-[60%]">
+          <div className="px-6 flex flex-col gap-8 justify-center mx-auto w-full md:w-[80%] xl:w-[60%]">
             <p className="text-secondary text-3xl md:text-[48px] text-center font-bold leading-[1.2]">
               {t("heroSectionTitle")}
             </p>

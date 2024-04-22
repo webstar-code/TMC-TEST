@@ -1,5 +1,6 @@
 import { logo } from "assets/images";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import {
   Accordion,
@@ -10,7 +11,7 @@ import {
 
 function Footer() {
   return (
-    <div className="px-6 bg-primary text-secondary md:px-16 md:mt-20 md:py-14">
+    <div className="px-6 bg-primary text-secondary md:px-16 md:py-14">
       <div className="flex flex-col gap-5 py-10 md:flex md:flex-row md:justify-between ">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-4">
@@ -105,14 +106,26 @@ function Footer() {
           </Accordion>
         </div>
         <div className="md:hidden mt-8">
-          <p>© 2023 TrackMyCare. All Rights Reserved.</p>
-          <p>Designed and developed by Flexxited</p>
+          <p className="text-sm">© 2024 TrackMyCare. All Rights Reserved.</p>
+          <p className="text-sm ">
+            Designed and developed by{" "}
+            <Link href={"https://flexxited.com"} className="underline">
+              Flexxited
+            </Link>
+          </p>
         </div>
       </div>
       <div className="h-[1px] bg-secondary mt-6 md:block hidden"></div>
       <div className="flex flex-row justify-between mt-6 font-thin">
-        <p className="md:block hidden">© 2023 Sportqo. All Rights Reserved.</p>
-        <p className="md:block hidden">Designed and developed by flexxited</p>
+        <p className="text-sm md:block hidden">
+          © 2024 Sportqo. All Rights Reserved.
+        </p>
+        <p className="text-sm md:block hidden">
+          Designed and developed by{" "}
+          <Link href={"https://flexxited.com"} className="underline">
+            flexxited
+          </Link>
+        </p>
       </div>
     </div>
   );

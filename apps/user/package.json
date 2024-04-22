@@ -15,7 +15,7 @@
     "@tanstack/react-table": "^8.15.0",
     "accept-language": "^3.0.18",
     "date-fns": "^3.6.0",
-    "firebase": "^10.9.0",
+    "firebase": "^10.11.0",
     "i18next": "^23.10.1",
     "i18next-browser-languagedetector": "^7.2.1",
     "i18next-locize-backend": "^6.4.1",

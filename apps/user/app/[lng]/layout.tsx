@@ -17,7 +17,6 @@ export const metadata: Metadata = {
 export async function generateStaticParams() {
   return languages.map((lng) => ({ lng }));
 }
-
 export default function RootLayout({
   children,
   params: { lng },
@@ -28,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang={lng} dir={dir(lng)}>
       <body className={plusJakartaSans.className}>
-        {children}
+        <main className="max-w-[1600px] mx-auto">{children}</main>
         <Toaster expand={true} richColors />
       </body>
     </html>

@@ -9,6 +9,7 @@ import FamilyMedicalVault from "./FamilyMedicalVault.svg";
 import FingerTipAccess from "./FingerTipAccess.svg";
 import HeroImage from "./HeroImage.png";
 import HowItWorks1 from "./HowItWorks.svg";
+import HowItWorks2 from "./HowItWorks2.png";
 import IndiaToday from "./IndiaToday.svg";
 import LifetimeRepository from "./LifetimeRepository.svg";
 import logo from "./logo.svg";
@@ -38,6 +39,7 @@ export {
   FingerTipAccess,
   HeroImage,
   HowItWorks1,
+  HowItWorks2,
   IndiaToday,
   LifetimeRepository,
   logo,

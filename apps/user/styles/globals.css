@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-*, body {
+*,
+body {
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -13,11 +14,12 @@
 }
 
 @keyframes reveal {
-	from {
-    transform: scale(1);
-	}
-	to {
+  from {
     transform: scale(0.6);
+  }
+
+  to {
+    transform: scale(0.8);
   }
 }
 
@@ -25,10 +27,10 @@
   .scaling-image {
     view-timeline-name: --scaling-image;
     view-timeline-axis: block;
-  
+
     animation: linear reveal both;
     animation-timeline: --scaling-image;
-  
+
     animation-range: entry 25% cover 50%;
   }
 }

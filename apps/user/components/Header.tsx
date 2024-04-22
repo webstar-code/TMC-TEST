@@ -1,41 +1,95 @@
 "use client";
-import React from "react";
+import { logo } from "assets/images";
 import Image from "next/image";
-import { Button, Dialog } from "ui";
-import { ChevronDown, Languages } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { logo } from "assets/images";
+import { Button, cn } from "ui";
 import { ROUTES } from "utils/routes";
 import { LanguageSwitcher } from "./language-switcher";
+import { Space_Grotesk } from "next/font/google";
+import useMediaQuery from "hooks/useMediaQuery";
+import { useState, useEffect } from "react";
+const space_Grotesk = Space_Grotesk({ subsets: ["latin"] });
 
 function Header() {
-  const currentRoute = usePathname();
+  const { isSmall } = useMediaQuery();
+  let currentRoute = usePathname();
+  currentRoute = "/" + currentRoute.split("/").slice(2)[0];
+
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      const visible = prevScrollPos > currentScrollPos;
+
+      setPrevScrollPos(currentScrollPos);
+      setVisible(visible);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [prevScrollPos]);
+
   return (
-    <div className="">
-      <div className="fixed top-0 bg-primary w-full z-50 flex flex-row justify-between items-center px-6 md:px-16 py-4 md:py-5">
-        <div className="flex flex-row gap-2">
-          <Image src={logo} alt="logo" width={42} height={42} />
-          <p className="text-secondary font-bold text-md">Track My Care</p>
+    <header
+      style={{
+        visibility: visible ? "visible" : "hidden",
+        transform: visible ? "translateY(0)" : "translateY(-100%)",
+      }}
+      className="max-w-[1600px] mx-auto w-full h-20 fixed top-0 flex items-center justify-between bg-primary z-40 drop-shadow-md transition-all duration-300">
+      <div className="container bg-primary w-full flex flex-row justify-between items-center">
+        <div className="flex flex-row items-center gap-2">
+          <Image
+            src={logo}
+            alt="logo"
+            width={isSmall ? 24 : 42}
+            height={isSmall ? 24 : 42}
+          />
+          <p
+            className={cn(
+              "text-xl md:text-2xl text-secondary font-bold",
+              space_Grotesk.className
+            )}>
+            TrackMyCare
+          </p>
         </div>
-        <div className="hidden md:flex">
-          <div className="text-secondary gap-10 flex flex-row font-thin text-md">
+        <div className="hidden lg:flex">
+          <div className="text-secondary gap-10 flex flex-row font-thin ">
             <Link
-              className={`${currentRoute === "/" ? "font-bold" : ""}`}
+              className={cn(
+                "text-base font-normal",
+                currentRoute === "/" && "font-semibold"
+              )}
               href="/">
               Home
             </Link>
             <Link
-              className={`${currentRoute === "/clinics" ? "font-bold" : ""}`}
+              className={cn(
+                "text-base font-normal",
+                currentRoute === "/clinics" && "font-semibold"
+              )}
               href="/clinics">
-              For Clients
+              For Clinics
             </Link>
             <Link
-              className={`${currentRoute === "/pricing" ? "font-bold" : ""}`}
+              className={cn(
+                "text-base font-normal",
+                currentRoute === "/pricing" && "font-semibold"
+              )}
               href="/pricing">
               Pricing
             </Link>
-            <Link className={``} href="contact-us">
+            <Link
+              className={cn(
+                "text-base font-normal",
+                currentRoute === "/contact-us" && "font-semibold"
+              )}
+              href="/contact-us">
               Contact Us
             </Link>
           </div>
@@ -51,7 +105,7 @@ function Header() {
           </Link>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
 

@@ -22,14 +22,14 @@ export function LanguageSwitcher() {
     <div className="flex items-center gap-1">
       <Languages color="white" size={20} />
       <Select onValueChange={(value) => changeLang(value)}>
-        <SelectTrigger className="w-max bg-primary border-none text-primary-foreground">
-          <SelectValue
-            className="bg-none"
+        <SelectTrigger className=" w-max bg-primary border-none text-primary-foreground p-0 sm:py-2 sm:px-3">
+          {/* <SelectValue
+            className="bg-none hidden sm:block"
             placeholder={
               LANGUAGES.find((i) => i.code == pathName.split("/")[1])?.name ||
               ""
             }
-          />
+          /> */}
         </SelectTrigger>
         <SelectContent>
           {LANGUAGES.map((lang) => (

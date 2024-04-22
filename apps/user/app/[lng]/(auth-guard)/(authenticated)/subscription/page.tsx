@@ -111,7 +111,7 @@ export default function SubscriptionPage() {
         .getPaymentMethod({ customerId: user.customerId })
         .then((res) => setPaymentMethod(res.data));
     }
-  }, []);
+  }, [user?.customerId]);
 
   if (showPlans) {
     return (

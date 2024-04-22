@@ -60,11 +60,11 @@ function WhyUse() {
     <div className="w-full px-6 py-10 md:py-24">
       <div className="w-full">
         <div className="w-full justify-center items-center flex flex-col gap-2 md:gap-6 md:px-16">
-          <div className="font-bold md:text-xl">WHY USE TRACK MY CARE</div>
+          <div className="font-semibold md:text-xl">WHY USE TRACK MY CARE</div>
           <div className="font-bold text-2xl md:text-4xl">
             Easy, Simple, Affordable
           </div>
-          <div className="font-light text-center text:sm md:text-lg md:w-[40%] mt-2">
+          <div className="font-normal text-center text:sm md:text-base md:w-[40%] mt-2">
             A solution designed to give you easy access to all of your
             healthcare data and documents.
           </div>
@@ -97,22 +97,24 @@ function WhyUse() {
           </Carousel>
         </div>
         <div className="hidden md:block">
-          <div className="grid grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 md:grid-cols-2 gap-12 md:px-8 md:py-12 justify-around mx-auto">
+          <div className="container grid grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 md:grid-cols-2 gap-10 md:px-8 md:py-12 justify-around mx-auto">
             {cardContent.map((item, index) => (
               <div
                 key={index}
-                className="shadow px-4 rounded-xl flex flex-col gap-4 py-10 w-[90%] mx-auto">
+                className="shadow px-6 rounded-xl flex flex-col gap-4 py-10 mx-auto">
                 <Image
                   src={item.imageUrl}
                   alt={item.title}
                   className="mx-auto h-[200px]"
-                  width={200}
-                  height={200}
+                  width={164}
+                  height={164}
                 />
                 <h2 className="text-xl font-bold w-full text-center">
                   {item.title}
                 </h2>
-                <p className="mt-2 w-full text-center">{item.description}</p>
+                <p className="mt-2 w-full text-center text-[#868686]">
+                  {item.description}
+                </p>
               </div>
             ))}
           </div>

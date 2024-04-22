@@ -4,26 +4,24 @@ import React from "react";
 
 function Services() {
   return (
-    <div className=" flex flex-col lg:flex-col xl:flex-row md:items-center md:py-18 px-8 md:px-16 gap-6 md:gap-2 w-full xl:justify-around">
-      <div className="flex flex-row md:w-[90%] lg:w-[70%] gap-4 font-semibold md:px-6 md:py-6 md:shadow md:rounded-md xl:w-1/4">
-        {" "}
-        <Image src={Tick} alt="" width={20} height={20} />{" "}
-        <h1>Easy Access to records anywhere</h1>
+    <div className="container flex flex-wrap items-center justify-center gap-4 mx-auto">
+      <div className="w-max flex flex-1 items-center gap-4 p-4 md:py-6 px-4 md:shadow md:rounded-md">
+        <Image src={Tick} alt="" width={20} height={20} />
+        <h1 className="text-base font-semibold">
+          Easy Access to records anywhere
+        </h1>
       </div>
-      <div className="flex flex-row md:w-[90%] lg:w-[70%] gap-4 font-semibold md:px-6 md:py-6 md:shadow md:rounded-md xl:w-1/4">
-        {" "}
+      <div className="w-max flex  items-center gap-4 p-4 md:p-6 md:shadow md:rounded-md">
         <Image src={Tick} alt="" width={20} height={20} />{" "}
-        <h1>Share with your doctors</h1>
+        <h1 className="text-base font-semibold">Share with your doctors</h1>
       </div>
-      <div className="flex flex-row md:w-[90%] lg:w-[70%] gap-4 font-semibold md:px-6 md:py-6 md:shadow md:rounded-md xl:w-1/4">
-        {" "}
+      <div className="w-max flex  items-center gap-4 p-4 md:p-6 md:shadow md:rounded-md">
         <Image src={Tick} alt="" width={20} height={20} />{" "}
-        <h1>Add Family Members</h1>
+        <h1 className="text-base font-semibold">Add Family Members</h1>
       </div>
-      <div className="flex flex-row md:w-[90%] lg:w-[70%] gap-4 font-semibold md:px-6 md:py-6 md:shadow md:rounded-md xl:w-1/4 mb-16 md:mb-0">
-        {" "}
+      <div className="w-max flex flex-1 items-center gap-4 p-4 md:p-6 md:shadow md:rounded-md">
         <Image src={Tick} alt="" width={20} height={20} />{" "}
-        <h1>Download records whenever</h1>
+        <h1 className="text-base font-semibold">Download records whenever</h1>
       </div>
     </div>
   );

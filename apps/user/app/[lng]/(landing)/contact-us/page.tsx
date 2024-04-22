@@ -2,14 +2,15 @@ import Footer from "components/Footer";
 import Header from "components/Header";
 import Contact from "components/landing-page/Contact";
 import Support from "components/landing-page/Support";
-import React from "react";
 
 function page() {
   return (
     <div>
       <Header />
-      <Support />
-      <Contact />
+      <div className="mt-16">
+        <Contact />
+        <Support />
+      </div>
       <Footer />
     </div>
   );
