@@ -229,13 +229,27 @@ function SideNav({
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <div className=" flex flex-col gap-1">
-                      <h1 className="ml-8 rounded-sm py-1 text-secondary">
-                        Customers
-                      </h1>
-                      <h1 className="ml-8 rounded-sm py-1 text-secondary">
-                        Employees
-                      </h1>
+                    <div className="flex flex-col gap-2">
+                      <Link href="/user-management/customer">
+                        <h1
+                          className={`${
+                            currPathname === "/user-management/customer"
+                              ? "bg-secondary text-[#004C4C]"
+                              : ""
+                          } ml-8 rounded-sm px-2 py-1 `}>
+                          Customers
+                        </h1>
+                      </Link>
+                      <Link href="/user-management/employee">
+                        <h1
+                          className={`${
+                            currPathname === "/user-management/employee"
+                              ? "bg-secondary text-[#004C4C]"
+                              : ""
+                          } ml-8 rounded-sm px-2 py-1 `}>
+                          Employees
+                        </h1>
+                      </Link>
                     </div>
                   </AccordionContent>
                 </AccordionItem>

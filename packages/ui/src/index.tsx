@@ -26,6 +26,8 @@ export * from "./components/ui/alert-dialog";
 export * from "./components/ui/badge";
 export * from "./components/ui/alert";
 export * from "./components/custom/Tabs";
+export * from "./components/ui/popover";
+export * from "./components/ui/calendar";
 
 // lib
 export * from "./lib/utils";

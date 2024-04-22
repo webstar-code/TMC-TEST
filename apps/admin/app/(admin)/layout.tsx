@@ -2,7 +2,7 @@
 import Header from "components/Header";
 import SideNav from "components/SideNav";
 import { onAuthStateChanged } from "firebase/auth";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Toaster } from "ui";
 
 import { useEffect, useState } from "react";
@@ -24,9 +24,11 @@ export default function RootLayout({
   });
   const [sideNavActive, setSideNavActive] = useState<boolean>(false);
   const { admin } = useAdminStore();
+  const router = useRouter();
+
   useEffect(() => {
     if (!admin) {
-      redirect("/login");
+      router.push("/login");
     }
   });
 
@@ -34,19 +36,21 @@ export default function RootLayout({
     <QueryClientProvider client={queryClient}>
       {/* Layout UI */}
       <main className="md:flex md:flex-row">
-        <div className="md:w-[48%] lg:w-[35%] xl:w-[20%]">
+        <div className="md:w-[30%] lg:w-[25%] xl:w-[18%] fixed">
           <SideNav
             sideNavActive={sideNavActive}
             setSideNavActive={setSideNavActive}
           />
         </div>
-        <div className="overflow-y-scroll w-full">
+        <div className="w-full md:ml-[30%] lg:ml-[25%] xl:ml-[18%]">
           <Header
             sideNavActive={sideNavActive}
             setSideNavActive={setSideNavActive}
           />
           <div className="w-full">{children}</div>
           <Toaster expand={true} richColors />
+          {children}
+          <Toaster />
         </div>
       </main>
     </QueryClientProvider>

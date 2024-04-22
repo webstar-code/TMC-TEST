@@ -18,6 +18,7 @@ import { auth } from "lib/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAdminStore } from "lib/store";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -29,6 +30,7 @@ const formSchema = z.object({
 });
 
 function Page() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,7 +42,7 @@ function Page() {
   const [loading, setLoading] = useState<boolean>(false);
 
   if (admin) {
-    redirect("/dashboard");
+    router.push("/dashboard");
   }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
