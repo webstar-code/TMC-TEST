@@ -169,27 +169,27 @@ function Page() {
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormControl>
-                      <>
-                        <Input
-                          type="file"
-                          className=""
-                          label="Clinic Logo*"
-                          onChange={handleLogoChange}
-                        />
-                        {/* <div className="absolute right-0 top-0 bottom-0 flex items-center px-3">
+                    <FormControl> */}
+              <>
+                <Input
+                  type="file"
+                  className=""
+                  label="Clinic Logo*"
+                  onChange={handleLogoChange}
+                />
+                {/* <div className="absolute right-0 top-0 bottom-0 flex items-center px-3">
                                                     <Upload size={20} />
                                                 </div> */}
-                      </>
-                    </FormControl>
+              </>
+              {/* </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
               <FormField
                 control={form.control}
                 name="address"
