@@ -47,10 +47,8 @@ export default function RootLayout({
             sideNavActive={sideNavActive}
             setSideNavActive={setSideNavActive}
           />
-          <div className="w-full">{children}</div>
-          <Toaster expand={true} richColors />
           {children}
-          <Toaster />
+          <Toaster expand={true} richColors />
         </div>
       </main>
     </QueryClientProvider>

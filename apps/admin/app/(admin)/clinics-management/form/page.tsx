@@ -171,7 +171,6 @@ function Page() {
               />
               <FormField
                 control={form.control}
-                name="clinicLogo"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
