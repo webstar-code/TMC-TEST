@@ -218,9 +218,11 @@ function Page() {
                           <Calendar
                             mode="single"
                             selected={date}
-                            onSelect={(date: Date) => {
-                              setDate(date);
-                              field.onChange(date); // Update the form field value
+                            onSelect={(date) => {
+                              if (date) {
+                                setDate(date);
+                                field.onChange(date); // Update the form field value
+                              }
                             }}
                             initialFocus
                           />
